@@ -2,6 +2,7 @@
 
 import { start } from 'repl';
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 export default function Tracking() {
 	let watchId: any = null;
@@ -132,6 +133,10 @@ export default function Tracking() {
 			<Button onClick={showMeMyLocation} className={`ml-10`}>
 				Give me my current location
 			</Button>
+
+			<div className=" bg-gray-400 text-3xl">
+				<Link href="#">Home</Link>
+			</div>
 		</div>
 	);
 }

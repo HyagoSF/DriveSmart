@@ -32,3 +32,7 @@ Name: Charleston Green
 Hex: #2B2B2B
 RGB: (43, 43, 43)
 CMYK: 0, 0, 0, 0.831
+
+
+
+database Password: "Bananinha12345678987"

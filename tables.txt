@@ -1,0 +1,179 @@
+Table: users
+Columns:
+- id (integer, primary key, auto increment)
+- name (text)
+- email (text)
+- password (text)
+
+Table: deliveries
+Columns:
+- id (integer, primary key, auto increment)
+- user_id (integer, foreign key to users table)
+- date (date)
+- total_hours (integer)
+- total_kms (integer)
+- gross_earnings (float)
+- gas_price (float)
+
+Table: expenses
+Columns:
+- id (integer, primary key, auto increment)
+- user_id (integer, foreign key to users table)
+- expense_type (text)
+- date (date)
+- odometer_reading (float)
+- gas_spent (float)
+- services_expenses (float)
+- other_expenses (float)
+
+Table: car_expenses
+Columns:
+- id (integer, primary key, auto increment)
+- user_id (integer, foreign key to users table)
+- date (date)
+- odometer_reading (float)
+- gas_spent (float)
+- service_expenses (float)
+- loan_payment (float)
+- insurance_cost (float)
+
+Table: expenses_summary
+Columns:
+- id (integer, primary key, auto increment)
+- user_id (integer, foreign key to users table)
+- month (integer)
+- year (integer)
+- total_gas_spent (float)
+- total_services_expenses (float)
+- total_other_expenses (float)
+
+Table: car_expenses_summary
+Columns:
+- id (integer, primary key, auto increment)
+- user_id (integer, foreign key to users table)
+- month (integer)
+- year (integer)
+- total_gas_spent (float)
+- total_services_expenses (float)
+- total_loan_payments (float)
+- total_insurance_cost (float)
+
+Table: expenses_statistics
+Columns:
+- id (integer, primary key, auto increment)
+- user_id (integer, foreign key to users table)
+- month (integer)
+- year (integer)
+- avg_cost_per_liter (float)
+- total_liters_purchased (float)
+- total_spent_after_gas (float)
+- avg_cost_per_km (float)
+- avg_cost_per_day (float)
+- avg_cost_per_30_days (float)
+
+
+
+model User {
+  // id        Int      @id @default(autoincrement())
+  // name      String
+  // email     String
+  // password  String
+  deliveries Delivery[]
+  expenses  Expense[]
+  carExpenses CarExpense[]
+  expensesSummary ExpensesSummary[]
+  carExpensesSummary CarExpensesSummary[]
+  expensesStatistics ExpensesStatistics[]
+}
+
+model Delivery {
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [user_id], references: [id])
+  user_id       Int
+  date          DateTime
+  total_hours   Int
+  total_kms     Int
+  gross_earnings Float
+  gas_price     Float
+}
+
+model Expense {
+  id               Int      @id @default(autoincrement())
+  user             User     @relation(fields: [user_id], references: [id])
+  user_id          Int
+  expense_type     String
+  date             DateTime
+  odometer_reading Float
+  gas_spent        Float
+  services_expenses Float
+  other_expenses   Float
+}
+
+model CarExpense {
+  id               Int      @id @default(autoincrement())
+  user             User     @relation(fields: [user_id], references: [id])
+  user_id          Int
+  date             DateTime
+  odometer_reading Float
+  gas_spent        Float
+  service_expenses Float
+  loan_payment     Float
+  insurance_cost   Float
+}
+
+model ExpensesSummary {
+  id                   Int      @id @default(autoincrement())
+  user                 User     @relation(fields: [user_id], references: [id])
+  user_id              Int
+  month                Int
+  year                 Int
+  total_gas_spent      Float
+  total_services_expenses Float
+  total_other_expenses Float
+}
+
+model CarExpensesSummary {
+  id                   Int      @id @default(autoincrement())
+  user                 User     @relation(fields: [user_id], references: [id])
+  user_id              Int
+  month                Int
+  year                 Int
+  total_gas_spent      Float
+  total_services_expenses Float
+  total_loan_payments Float
+  total_insurance_cost Float
+}
+
+model ExpensesStatistics {
+  id                   Int      @id @default(autoincrement())
+  user                 User     @relation(fields: [user_id], references: [id])
+  user_id              Int
+  month                Int
+  year                 Int
+  avg_cost_per_liter   Float
+  total_liters_purchased Float
+  total_spent_after_gas Float
+  avg_cost_per_km      Float
+  avg_cost_per_day     Float
+  avg_cost_per_30_days Float
+}
+
+
+
+drivers: This table holds information about each driver, such as their name, email, and password.
+
+deliveries: This table holds information about each delivery, such as the driver who completed the delivery, the date, total hours driven, total kilometers driven, gross earnings, and gas price.
+
+earnings_summary: This table holds summary information for each week of earnings, such as the total hours driven, total kilometers driven, total earnings, and total gas used.
+
+
+
+expenses: This table holds information about all the expenses, including expenses for your car and other expenses. It includes the driver ID, expense type, date, odometer reading, gas spent, service expenses, and other expenses.
+
+car_expenses: This table holds information about car-related expenses, such as gas spent, service expenses, loan payment, and insurance cost. It includes the driver ID, date, odometer reading, gas spent, service expenses, loan payment, and insurance cost.
+
+expenses_summary: This table holds summary information for all the expenses for each month, including total gas spent, total services expenses, and total other expenses.
+
+car_expenses_summary: This table holds summary information for all the car-related expenses for each month, including total gas spent, total services expenses, total loan payments, and total insurance cost.
+
+expenses_statistics: This table holds statistics for each month, including average cost per liter, total liters purchased, total spent after gas, average cost per km, average cost per day, and average cost per 30 days.
