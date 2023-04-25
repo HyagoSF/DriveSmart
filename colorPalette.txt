@@ -1,0 +1,34 @@
+Name: Wageningen Green
+Hex: #399F2E
+RGB: (57, 159, 46)
+CMYK: 0.641, 0, 0.710, 0.376
+
+KELLY GREEN	
+Name: Kelly Green
+Hex: #49B51F
+RGB: (73, 181, 31)
+CMYK: 0.596, 0, 0.828, 0.290
+
+RYB GREEN	
+Name: RYB Green
+Hex: #62CD32
+RGB: (98, 205, 50)
+CMYK: 0.521, 0, 0.756, 0.196
+
+LIGHT GRAY	
+Name: Light Gray
+Hex: #D3D3D3
+RGB: (211, 211, 211)
+CMYK: 0, 0, 0, 0.172
+
+GRANITE GRAY	
+Name: Granite Gray
+Hex: #626363
+RGB: (98, 99, 99)
+CMYK: 0.010, 0, 0, 0.611
+
+CHARLESTON GREEN	
+Name: Charleston Green
+Hex: #2B2B2B
+RGB: (43, 43, 43)
+CMYK: 0, 0, 0, 0.831
