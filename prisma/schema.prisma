@@ -74,29 +74,35 @@ model VerificationRequest {
 // --------------------------------------
 // My Prisma Schema
 
+// This is the main table, 
 model Delivery {
-  id            String   @id @default(cuid())
-  user          User     @relation(fields: [userId], references: [id])
-  userId        String
-  date          DateTime
-  totalHours    Int
-  totalKms      Int
-  grossEarnings Float
-  gasPrice      Float
+  id             String   @id @default(cuid())
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  date           DateTime // Date of the delivery (YYYY-MM-DD)
+  totalHours     Int
+  totalKms       Int
+  grossEarnings  Float
+  liquidEarnings Float?
+  gasPrice       Decimal  @db.Decimal(4, 3) // 4 digits, 3 decimals
+  gasLiters      Float?
+  gasSpent       Float?
 }
 
+// Work-related expenses
 model Expense {
-  id               String   @id @default(cuid())
-  user             User     @relation(fields: [userId], references: [id])
-  userId           String
-  expenseType      String
-  date             DateTime
-  odometerReading  Float
-  gasSpent         Float
-  servicesExpenses Float
-  otherExpenses    Float
+  id              String   @id @default(cuid())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  expenseType     String
+  date            DateTime
+  odometerReading Float
+  gasSpent        Float
+  serviceExpenses Float?
+  otherExpenses   Float
 }
 
+// Personal vehicle expenses
 model CarExpense {
   id              String   @id @default(cuid())
   user            User     @relation(fields: [userId], references: [id])
@@ -104,44 +110,54 @@ model CarExpense {
   date            DateTime
   odometerReading Float
   gasSpent        Float
-  serviceExpenses Float
+  serviceExpenses Float?
   loanPayment     Float
   insuranceCost   Float
 }
 
+// Work-related expenses summary
 model ExpensesSummary {
-  id                    String @id @default(cuid())
-  user                  User   @relation(fields: [userId], references: [id])
-  userId                String
-  month                 Int
-  year                  Int
-  totalGasSpent         Float
-  totalServicesExpenses Float
-  totalOtherExpenses    Float
-}
-
-model CarExpensesSummary {
-  id                    String @id @default(cuid())
-  user                  User   @relation(fields: [userId], references: [id])
-  userId                String
-  month                 Int
-  year                  Int
-  totalGasSpent         Float
-  totalServicesExpenses Float
-  totalLoanPayments     Float
-  totalInsuranceCost    Float
-}
-
-model ExpensesStatistics {
   id                   String @id @default(cuid())
   user                 User   @relation(fields: [userId], references: [id])
   userId               String
   month                Int
   year                 Int
-  avgCostPerLiter      Float
-  totalLitersPurchased Float
-  totalSpentAfterGas   Float
-  avgCostPerKm         Float
-  avgCostPerDay        Float
-  avgCostPer30Days     Float
+  totalGasSpent        Float
+  totalGasLiters       Float?
+  totalKms             Float?
+  totalServiceExpenses Float?
+  totalOtherExpenses   Float
+}
+
+// Personal vehicle expenses summary
+model CarExpensesSummary {
+  id                   String @id @default(cuid())
+  user                 User   @relation(fields: [userId], references: [id])
+  userId               String
+  month                Int
+  year                 Int
+  totalGasSpent        Float
+  totalGasLiters       Float?
+  totalKms             Float?
+  totalServiceExpenses Float?
+  totalLoanPayments    Float
+  totalInsuranceCost   Float
+}
+
+model ExpensesStatistics {
+  id                       String @id @default(cuid())
+  user                     User   @relation(fields: [userId], references: [id])
+  userId                   String
+  month                    Int
+  year                     Int
+  avgCostPerLiter          Float
+  totalLitersPurchased     Float
+  totalSpentAfterGas       Float
+  avgCostPerKm             Float
+  avgCostPerDay            Float
+  avgCostPer30Days         Float
+  totalEarnings            Float?
+  totalExpenses            Float?
+  netEarnings              Float?
+  liquidEarningsPercentage Float?
 }

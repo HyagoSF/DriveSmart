@@ -3,6 +3,9 @@ import { Inter } from 'next/font/google';
 
 import { Open_Sans } from 'next/font/google';
 import Nav from './auth/Nav';
+import Footer from './Footer';
+
+import QueryWrapper from './auth/QueryWrapper';
 
 // Adding the font to the page
 const openSans = Open_Sans({
@@ -25,10 +28,14 @@ export default function RootLayout({ children }) {
 		<html lang="en">
 			{/* When I use openSans.classname will change all my pages font to opensans, if I use variable, just those who I add the font-open-sans will render */}
 			<body className={`${openSans.className} bg-gray-200 `}>
-				{/* NavBar here */}
-				<Nav />
+				<QueryWrapper>
+					{/* NavBar here */}
+					<Nav />
 
-				{children}
+					{children}
+
+					<Footer />
+				</QueryWrapper>
 			</body>
 		</html>
 	);
