@@ -8,8 +8,19 @@ import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { DollarSign } from 'lucide-react';
 
-type Dollars = number | null ;
+type Dollars = number | null;
 type Liters = number | null;
+
+type allVariablesMine = {
+	date: string;
+	totalHours: number;
+	totalKms: number;
+	grossEarnings: Dollars;
+	liquidEarnings: Dollars;
+	gasPrice: Dollars;
+	gasLiters: Liters;
+	gasSpent: Dollars;
+};
 
 export default function DeliveryForm() {
 	// const [title, setTitle] = useState('');
@@ -36,9 +47,9 @@ export default function DeliveryForm() {
 			const gasSpent = gasLiters * gasPrice;
 			const liquidEarnings = grossEarnings - gasSpent;
 
-			setLiquidEarnings(liquidEarnings);
-			setGasLiters(gasLiters);
-			setGasSpent(gasSpent);
+			setLiquidEarnings(+liquidEarnings.toFixed(2));
+			setGasLiters(+gasLiters.toFixed(2));
+			setGasSpent(+gasSpent.toFixed(2));
 		} else {
 			// setLiquidEarnings(null);
 			// setGasLiters(null);
@@ -46,9 +57,9 @@ export default function DeliveryForm() {
 		}
 	}, [totalKms, grossEarnings, gasPrice]);
 
-	useEffect(() => {
-		console.log(grossEarnings);
-	}, [grossEarnings]);
+	// useEffect(() => {
+	// 	console.log(grossEarnings);
+	// }, [grossEarnings]);
 
 	// NOTIFICATIONS
 	const notify = (message: string, type: string) => {
@@ -118,45 +129,86 @@ export default function DeliveryForm() {
 	const onSubmitFormHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setIsDisabled(true);
-		notify('Success', 'success');
+		// notify('Success', 'success');
 		// notify('Loading...', 'loading');
-		// mutate(title);
+		// mutate all my states
+		mutate({
+			date: date,
+			totalHours: totalHours,
+			totalKms: totalKms,
+			grossEarnings: grossEarnings,
+			gasPrice: gasPrice,
+			liquidEarnings: liquidEarnings,
+			gasLiters: gasLiters,
+			gasSpent: gasSpent,
+		});
 	};
 
-	// // QUERIES
-	// // Create a mutation/delivery
-	// const { mutate } = useMutation(
-	// 	async (title: string) => {
-	// 		await axios.post('/api/delivery/addDelivery', { title });
-	// 	},
-	// 	{
-	// 		onError: (err: any) => {
-	// 			const errorMessage = err?.response?.data.message;
-	// 			// notify(errorMessage);
-	// 			if (err instanceof AxiosError) {
-	// 				notify(errorMessage, 'error');
-	// 			}
-	// 			setIsDisabled(false);
-	// 		},
-	// 		onSuccess: (data) => {
-	// 			console.log(data);
-	// 			// const successMessage = data.data.message;
-	// 			queryClient.invalidateQueries({ queryKey: ['posts'] });
+	// QUERIES
+	// Create a mutation/delivery
+	const { mutate } = useMutation(
+		async ({
+			date,
+			totalHours,
+			totalKms,
+			grossEarnings,
+			gasPrice,
+			liquidEarnings,
+			gasLiters,
+			gasSpent,
+		}: allVariablesMine) => {
+			await axios.post('/api/delivery/addDelivery', {
+				value: {
+					date,
+					totalHours,
+					totalKms,
+					grossEarnings,
+					gasPrice,
+					liquidEarnings,
+					gasLiters,
+					gasSpent,
+				},
+			});
+		},
+		{
+			onError: (err: any) => {
+				const errorMessage = err?.response?.data.message;
+				// notify(errorMessage);
+				if (err instanceof AxiosError) {
+					notify(errorMessage, 'error');
+				}
+				setIsDisabled(false);
+			},
+			onSuccess: (data) => {
+				console.log(data);
+				// const successMessage = data.data.message;
+				queryClient.invalidateQueries({ queryKey: ['delivery'] });
 
-	// 			// notify(successMessage, 'success');
-	// 			notify('Success', 'success');
-	// 			setTitle('');
-	// 			setIsDisabled(false);
-	// 		},
-	// 	}
-	// );
+				// notify(successMessage, 'success');
+				notify('Success', 'success');
+
+				// Reset all the states
+				setDate('');
+				setTotalHours(0);
+				setTotalKms(0);
+				setGrossEarnings(0);
+				setLiquidEarnings(0);
+				setGasPrice(0);
+				setGasLiters(0);
+				setGasSpent(0);
+				setIsDisabled(false);
+			},
+		}
+	);
 
 	return (
 		<form
 			onSubmit={onSubmitFormHandler}
 			className="bg-white my-8 p-8 rounded-md">
 			{/* Here is for the toaster notification */}
+
 			<Toaster position="top-center" reverseOrder={false} />
+
 			<h1 className="text-center text-3xl mb-8">Delivery</h1>
 			{/* <form className="w-full max-w-lg"> */}
 			<div className="flex flex-wrap -mx-3 ">
@@ -174,6 +226,7 @@ export default function DeliveryForm() {
 						value={date}
 						onChange={handleDateChange}
 						placeholder="YYYY-MM-DD"
+						// required
 					/>
 				</div>
 				<div className="w-full md:w-1/2 px-3">
@@ -222,7 +275,7 @@ export default function DeliveryForm() {
 						className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white"
 						id="gross_earnings"
 						name="gross_earnings"
-						value={grossEarnings === 0 ? undefined : grossEarnings}
+						value={grossEarnings === 0 ? '' : grossEarnings}
 						onChange={handleGrossEarningsChange}
 						type="number"
 						placeholder="Enter gross earnings"
@@ -254,7 +307,7 @@ export default function DeliveryForm() {
 					Add Delivery Day
 				</button>
 
-				{gasLiters !== null && (
+				{gasLiters !== 0 && gasLiters !== null && (
 					<div className="w-full md:w-1/2 px-3 relative mt-4 ">
 						<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
 							Total gas used: &nbsp;
@@ -264,7 +317,7 @@ export default function DeliveryForm() {
 						</label>
 					</div>
 				)}
-				{gasSpent !== null && (
+				{gasSpent !== 0 && gasSpent !== null && (
 					<div className="w-full md:w-1/2 px-3 relative mt-4 ">
 						<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
 							Total spent on gas: &nbsp;
@@ -274,7 +327,7 @@ export default function DeliveryForm() {
 						</label>
 					</div>
 				)}
-				{liquidEarnings !== null && (
+				{liquidEarnings !== 0 && liquidEarnings != null && (
 					<div className="w-full md:w-1/2 px-3 relative mt-4 ">
 						<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
 							Liquid Earnings: &nbsp;
