@@ -78,8 +78,6 @@ export default async function handler(
 		},
 	});
 
-	console.log(user);
-
 	try {
 		// // Add the delivery to this day and user
 		// const newComment = await prisma.comment.create({
