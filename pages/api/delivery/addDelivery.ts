@@ -1,5 +1,5 @@
 import { NextApiResponse, NextApiRequest } from 'next';
-// import { getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 
 import prisma from '../../../prisma/client';
 import { authOptions } from '../auth/[...nextauth].js';
@@ -8,12 +8,14 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	// const session = await getServerSession(req, res, authOptions);
+	const session = await getServerSession(req, res, authOptions);
+
+	console.log(session);
 
 	// const { value } = req.body;
 	// console.log(value + ' Is my Value');
 	const { value } = req.body;
-	console.log(value);
+	// console.log(value);
 
 	/*
 	I'm getting it:
@@ -64,12 +66,12 @@ export default async function handler(
 	// 	},
 	// });
 
-	// // Find the user who is logged in and get the id for use in the comment
-	// const user = await prisma.user.findUnique({
-	// 	where: {
-	// 		email: session?.user?.email,
-	// 	},
-	// });
+	// Find the user who is NavBarLogged in and get the id for use in the comment
+	const user = await prisma.user.findUnique({
+		where: {
+			email: session?.user?.email,
+		},
+	});
 
 	const user = await prisma.user.findUnique({
 		where: {
@@ -79,26 +81,26 @@ export default async function handler(
 	});
 
 	try {
-		// // Add the delivery to this day and user
-		// const newComment = await prisma.comment.create({
-		// 	data: {
-		// 		text: text,
-		// 		post: {
-		// 			// connect the comment to the post
-		// 			connect: {
-		// 				id: post.id,
-		// 			},
-		// 		},
-		// 		user: {
-		// 			// connect the comment to the user
-		// 			connect: {
-		// 				id: user.id,
-		// 			},
-		// 		},
-		// 		// organize the comments by the date they were created
-		// 		createdAt: new Date(),
-		// 	},
-		// });
+		// Add the delivery to this day and user
+		const newComment = await prisma.comment.create({
+			data: {
+				text: text,
+				post: {
+					// connect the comment to the post
+					connect: {
+						id: post.id,
+					},
+				},
+				user: {
+					// connect the comment to the user
+					connect: {
+						id: user.id,
+					},
+				},
+				// organize the comments by the date they were created
+				createdAt: new Date(),
+			},
+		});
 
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({

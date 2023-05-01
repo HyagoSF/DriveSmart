@@ -1,69 +1,21 @@
-import Link from 'next/link';
-import {
-	User,
-	BellIcon,
-	Car,
-	ChevronDown,
-	Home as HomeIcon,
-	CalendarSearch,
-	DollarSign,
-	Receipt,
-} from 'lucide-react';
-import DeliveryForm from './components/DeliveryForm';
+// this page is going to be the first page, the login page
 
-export default function Home() {
+import Login from './auth/Login';
+import HomePage from './components/HomePage';
+
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../pages/api/auth/[...nextauth]';
+
+export default async function Home() {
+	const session = await getServerSession(authOptions);
+
 	return (
 		<main className=" min-h-screen">
-			{/* Content */}
+			{/* If the user is not Logged */}
+			{!session?.user && <Login />}
 
-			{/* Tracking option */}
-			<div className="items-center bg-white m-2 rounded">
-				{/* TODO: MAKE THIS CAR GO TO THE RIGHT WHEN THE USER CLICK TO START DRIVE, AND MAKE SOMETHING GREEN */}
-
-				<div className="flex flex-row justify-between items-center gap-16 mx-1">
-					<div className="flex flex-row items-center m-2 gap-2">
-						<Car color="black" size={32} className="" />
-						<button className="">Start Drive</button>
-					</div>
-
-					{/* TODO: THIS WILL BE FUNCTIONS, WILL UPDATE BY ITSELF */}
-					<h3>0:30 11km</h3>
-				</div>
-			</div>
-
-			<div className=" bg-white m-2 rounded h-screen">
-				<h1 className="text-2xl">This week small summary</h1>
-			</div>
-
-			{/* Footer
-			<footer className="flex flex-col items-center justify-center w-screen h-20 bg-white sticky bottom-0 ">
-				<ul className="flex flex-center justify-between w-screen p-4 py-2 ">
-					<Link
-						href="#"
-						className="flex flex-col items-center justify-center text-center w-12">
-						<HomeIcon size={32} />
-						Home
-					</Link>
-					<Link
-						href="delivery"
-						className="flex flex-col items-center justify-center text-center w-12">
-						<DollarSign size={32} />
-						Delivery
-					</Link>
-					<Link
-						href="expense"
-						className="flex flex-col items-center justify-center text-center w-12">
-						<Receipt size={32} />
-						Work
-					</Link>
-					<Link
-						href="carExpense"
-						className="flex flex-col items-center justify-center text-center w-12">
-						<Receipt size={32} />
-						Personal
-					</Link>
-				</ul>
-			</footer> */}
+			{/* If the user is Logged */}
+			{session?.user && <HomePage />}
 		</main>
 	);
 }

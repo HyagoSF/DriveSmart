@@ -2,16 +2,21 @@
 
 import { signIn } from 'next-auth/react';
 
+
 export default function Login() {
+
+
+	const handleSignIn = async () => {
+		await signIn('google');
+	};
+
 	return (
-		<li className="list-none">
+		<main className="min-h-screen">
 			<button
-				onClick={async () => {
-					await signIn('google');
-				}}
-				className="text-sm bg-gray-700 text-white py-2 px-6 rounded-xl disabled:opacity-25">
+				onClick={handleSignIn}
+				className="relative top-52 left-52 text-sm bg-gray-700 text-white py-2 px-6 rounded-xl disabled:opacity-25">
 				Sign In
 			</button>
-		</li>
+		</main>
 	);
 }
