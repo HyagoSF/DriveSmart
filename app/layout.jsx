@@ -9,6 +9,8 @@ import QueryWrapper from './auth/QueryWrapper';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../pages/api/auth/[...nextauth]';
 import NavBarLogged from './auth/NavBarLogged';
+// import { RouteGuard } from './components/RouteGuard';
+import { useRouter } from 'next/navigation';
 
 // Adding the font to the page
 const openSans = Open_Sans({
@@ -28,6 +30,13 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
 	const session = await getServerSession(authOptions);
+	// const router = useRouter();
+
+	// useEffect(() => {
+	// 	if (getPath !== '/' && !session?.user) {
+	// 		router.push('/');
+	// 	}
+	// });
 
 	return (
 		<html lang="en">
@@ -45,3 +54,23 @@ export default async function RootLayout({ children }) {
 		</html>
 	);
 }
+
+// function MyApp({ Component, pageProps }) {
+// 	const router = useRouter();
+// 	const [isLoading, setIsLoading] = useState(true);
+
+// 	useEffect(() => {
+// 		const userInfo = GET_USER_FROM_LS;
+// 		if (router.pathname !== '/login' && !userInfo) {
+// 			router.push('/login');
+// 		} else {
+// 			setIsLoading(false);
+// 		}
+// 	}, []);
+
+// 	if (isLoading) {
+// 		return <YourLoadingComponent />;
+// 	}
+
+// 	return YOUR_DEFAULT_RETURN;
+// }

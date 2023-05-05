@@ -180,7 +180,7 @@ export default function DeliveryForm() {
 				setIsDisabled(false);
 			},
 			onSuccess: (data) => {
-				console.log(data);
+				// console.log(data);
 				// const successMessage = data.data.message;
 				queryClient.invalidateQueries({ queryKey: ['delivery'] });
 

@@ -3,15 +3,10 @@
 
 import React from 'react';
 
-
-export default ExpenseList = ({ expenses }) => {
-    return (
-        <View style={styles.expenseList}>
-        <FlatList
-            data={expenses}
-            renderItem={({ item }) => <ExpenseItem expense={item} />}
-            keyExtractor={(item) => item.id}
-        />
-        </View>
-    );
-    };
+export default function ExpenseList() {
+	return (
+		<>
+			<h1>Expenses list</h1>
+		</>
+	);
+}

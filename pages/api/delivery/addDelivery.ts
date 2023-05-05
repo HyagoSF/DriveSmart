@@ -10,7 +10,7 @@ export default async function handler(
 ) {
 	const session = await getServerSession(req, res, authOptions);
 
-	console.log(session);
+	// console.log(session);
 
 	// const { value } = req.body;
 	// console.log(value + ' Is my Value');
@@ -66,41 +66,35 @@ export default async function handler(
 	// 	},
 	// });
 
-	// Find the user who is NavBarLogged in and get the id for use in the comment
+	// Find the user where the email is equal to the session email
 	const user = await prisma.user.findUnique({
 		where: {
 			email: session?.user?.email,
 		},
 	});
 
-	const user = await prisma.user.findUnique({
-		where: {
-			// email: session?.user?.email,
-			email: 'hyago@gmail.com',
-		},
-	});
 
 	try {
-		// Add the delivery to this day and user
-		const newComment = await prisma.comment.create({
-			data: {
-				text: text,
-				post: {
-					// connect the comment to the post
-					connect: {
-						id: post.id,
-					},
-				},
-				user: {
-					// connect the comment to the user
-					connect: {
-						id: user.id,
-					},
-				},
-				// organize the comments by the date they were created
-				createdAt: new Date(),
-			},
-		});
+		// // Add the delivery to this day and user
+		// const newComment = await prisma.comment.create({
+		// 	data: {
+		// 		text: text,
+		// 		post: {
+		// 			// connect the comment to the post
+		// 			connect: {
+		// 				id: post.id,
+		// 			},
+		// 		},
+		// 		user: {
+		// 			// connect the comment to the user
+		// 			connect: {
+		// 				id: user.id,
+		// 			},
+		// 		},
+		// 		// organize the comments by the date they were created
+		// 		createdAt: new Date(),
+		// 	},
+		// });
 
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({
