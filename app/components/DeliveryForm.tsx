@@ -35,6 +35,9 @@ export default function DeliveryForm() {
 	const [gasSpent, setGasSpent] = useState<Dollars>(0);
 
 	const [isDisabled, setIsDisabled] = useState(false);
+
+	const [showForm, setShowForm] = useState(false);
+
 	let toastPostId: string;
 
 	// To access the client, and use the queryClient to invalidate the query ( to refetch the data when the mutation is done)
@@ -125,6 +128,10 @@ export default function DeliveryForm() {
 		setGasPrice(Number(event.target.value));
 	};
 
+	const handleShowForm = () => {
+		setShowForm(!showForm);
+	};
+
 	// SUBMIT HANDLER
 	const onSubmitFormHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -204,140 +211,161 @@ export default function DeliveryForm() {
 	return (
 		<form
 			onSubmit={onSubmitFormHandler}
-			className="bg-white my-8 p-8 rounded-md">
+			className="bg-white my-4 px-8 py-2 rounded-md">
 			{/* Here is for the toaster notification */}
 
 			<Toaster position="top-center" reverseOrder={false} />
 
-			<h1 className="text-center text-3xl mb-8">Delivery</h1>
-			{/* <form className="w-full max-w-lg"> */}
-			<div className="flex flex-wrap -mx-3 ">
-				<div className="w-full md:w-1/2 px-3">
-					<label
-						className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-						htmlFor="date">
-						Date
-					</label>
-					<input
-						className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-						id="date"
-						name="date"
-						type="date"
-						value={date}
-						onChange={handleDateChange}
-						placeholder="YYYY-MM-DD"
-						// required
-					/>
-				</div>
-				<div className="w-full md:w-1/2 px-3">
-					<label
-						className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-						htmlFor="total_hours">
-						Total Hours
-					</label>
-					<input
-						className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-						id="total_hours"
-						name="total_hours"
-						value={totalHours === 0 ? '' : totalHours}
-						onChange={handleTotalHoursChange}
-						type="number"
-						placeholder="Enter total hours"
-					/>
-				</div>
-				<div className="w-full md:w-1/2 px-3">
-					<label
-						className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-						htmlFor="total_kms">
-						Total Kms
-					</label>
-					<input
-						className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-						id="total_kms"
-						name="total_kms"
-						value={totalKms === 0 ? '' : totalKms}
-						onChange={handleTotalKmsChange}
-						type="number"
-						placeholder="Enter total kms"
-					/>
-				</div>
-				<div className="w-full md:w-1/2 px-3 relative">
-					<DollarSign
-						size={16}
-						className="absolute inset-y-0 left-0 mt-10 ml-6 flex items-center text-gray-700"
-					/>
-					<label
-						className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-						htmlFor="gross_earnings">
-						Gross Earnings
-					</label>
-					<input
-						className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white"
-						id="gross_earnings"
-						name="gross_earnings"
-						value={grossEarnings === 0 ? '' : grossEarnings}
-						onChange={handleGrossEarningsChange}
-						type="number"
-						placeholder="Enter gross earnings"
-					/>
-				</div>
+			<h1
+				className="text-center text-3xl cursor-pointer"
+				onClick={handleShowForm}>
+				Delivery Form
+			</h1>
 
-				<div className="w-full md:w-1/2 px-3">
-					<label
-						className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-						htmlFor="gas_price">
-						Gas Price
-					</label>
-					<input
-						className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-						id="gas_price"
-						name="gas_price"
-						value={gasPrice === 0 ? '' : gasPrice}
-						onChange={handleGasPriceChange}
-						type="number"
-						step="0.001"
-						placeholder="Enter gas price"
-					/>
+			{showForm && (
+				<div className="flex flex-wrap -mx-3 mt-8">
+					<div className="w-full md:w-1/2 px-3">
+						<label
+							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							htmlFor="date">
+							Date
+						</label>
+						<input
+							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+							id="date"
+							name="date"
+							type="date"
+							value={date}
+							onChange={handleDateChange}
+							placeholder="YYYY-MM-DD"
+							// required
+						/>
+					</div>
+					<div className="w-full md:w-1/2 px-3">
+						<label
+							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							htmlFor="total_hours">
+							Total Hours
+						</label>
+						<input
+							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+							id="total_hours"
+							name="total_hours"
+							value={totalHours === 0 ? '' : totalHours}
+							onChange={handleTotalHoursChange}
+							type="number"
+							placeholder="Enter total hours"
+						/>
+					</div>
+					<div className="w-full md:w-1/2 px-3">
+						<label
+							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							htmlFor="total_kms">
+							Total Kms
+						</label>
+						<input
+							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+							id="total_kms"
+							name="total_kms"
+							value={totalKms === 0 ? '' : totalKms}
+							onChange={handleTotalKmsChange}
+							type="number"
+							placeholder="Enter total kms"
+						/>
+					</div>
+					<div className="w-full md:w-1/2 px-3 relative">
+						<DollarSign
+							size={16}
+							className="absolute inset-y-0 left-0 mt-10 ml-6 flex items-center text-gray-700"
+						/>
+						<label
+							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							htmlFor="gross_earnings">
+							Gross Earnings
+						</label>
+						<input
+							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white"
+							id="gross_earnings"
+							name="gross_earnings"
+							value={grossEarnings === 0 ? '' : grossEarnings}
+							onChange={handleGrossEarningsChange}
+							type="number"
+							placeholder="Enter gross earnings"
+						/>
+					</div>
+
+					<div className="w-full md:w-1/2 px-3">
+						<label
+							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							htmlFor="gas_price">
+							Gas Price
+						</label>
+						<input
+							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+							id="gas_price"
+							name="gas_price"
+							value={gasPrice === 0 ? '' : gasPrice}
+							onChange={handleGasPriceChange}
+							type="number"
+							step="0.001"
+							placeholder="Enter gas price"
+						/>
+					</div>
+
+					<button
+						disabled={isDisabled}
+						type="submit"
+						className="w-full bg-green-500 text-white font-bold py-2 px-6 rounded-xl disabled:opacity-25 ">
+						Add Delivery Day
+					</button>
+
+					{gasLiters !== 0 && gasLiters !== null && (
+						<div className="w-full md:w-1/2 px-3 relative mt-4 ">
+							<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
+								Total gas used: &nbsp;
+								<span className="text-green-600 font-bold ">
+									{gasLiters.toFixed(2)} L
+								</span>
+							</label>
+						</div>
+					)}
+					{gasSpent !== 0 && gasSpent !== null && (
+						<div className="w-full md:w-1/2 px-3 relative mt-4 ">
+							<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
+								Total spent on gas: &nbsp;
+								<span className="text-green-600 font-bold ">
+									$ {gasSpent.toFixed(2)}
+								</span>
+							</label>
+						</div>
+					)}
+					{liquidEarnings !== 0 && liquidEarnings != null && (
+						<>
+							<div className="w-full md:w-1/2 px-3 relative mt-4 ">
+								<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
+									Liquid Hourly: &nbsp;
+									<span className="text-green-600 font-bold ">
+										${' '}
+										{(liquidEarnings / totalHours).toFixed(
+											2
+										)}
+										/h
+									</span>
+								</label>
+							</div>
+
+							<div className="w-full md:w-1/2 px-3 relative mt-4 ">
+								<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
+									Liquid Earnings: &nbsp;
+									<span className="text-green-600 font-bold ">
+										$ {liquidEarnings.toFixed(2)}
+									</span>
+								</label>
+							</div>
+						</>
+					)}
 				</div>
-
-				<button
-					disabled={isDisabled}
-					type="submit"
-					className="w-full bg-green-500 text-white font-bold py-2 px-6 rounded-xl disabled:opacity-25 ">
-					Add Delivery Day
-				</button>
-
-				{gasLiters !== 0 && gasLiters !== null && (
-					<div className="w-full md:w-1/2 px-3 relative mt-4 ">
-						<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
-							Total gas used: &nbsp;
-							<span className="text-green-600 font-bold ">
-								{gasLiters.toFixed(2)} L
-							</span>
-						</label>
-					</div>
-				)}
-				{gasSpent !== 0 && gasSpent !== null && (
-					<div className="w-full md:w-1/2 px-3 relative mt-4 ">
-						<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
-							Total spent on gas: &nbsp;
-							<span className="text-green-600 font-bold ">
-								$ {gasSpent.toFixed(2)}
-							</span>
-						</label>
-					</div>
-				)}
-				{liquidEarnings !== 0 && liquidEarnings != null && (
-					<div className="w-full md:w-1/2 px-3 relative mt-4 ">
-						<label className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white">
-							Liquid Earnings: &nbsp;
-							<span className="text-green-600 font-bold ">
-								$ {liquidEarnings.toFixed(2)}
-							</span>
-						</label>
-					</div>
-				)}
-			</div>
+			)}
 		</form>
 	);
 }

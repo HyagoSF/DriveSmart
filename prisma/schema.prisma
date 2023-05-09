@@ -132,17 +132,19 @@ model VerificationToken {
 
 // This is the main table, 
 model Delivery {
-  id             String   @id @default(cuid())
-  user           User     @relation(fields: [userId], references: [id])
-  userId         String
-  date           DateTime // Date of the delivery (YYYY-MM-DD)
-  totalHours     Int
-  totalKms       Int
-  grossEarnings  Float
-  liquidEarnings Float?
-  gasPrice       Decimal  @db.Decimal(4, 3) // 4 digits, 3 decimals
-  gasLiters      Float?
-  gasSpent       Float?
+  id               String   @id @default(cuid())
+  user             User     @relation(fields: [userId], references: [id])
+  userId           String
+  date             DateTime // Date of the delivery (YYYY-MM-DD)
+  totalHours       Int
+  totalKms         Int
+  grossEarnings    Float
+  liquidEarnings   Float?
+  gasPrice         Decimal  @db.Decimal(4, 3) // 4 digits, 3 decimals
+  gasLiters        Float?
+  gasSpent         Float?
+  grossHourlyRate  Float?
+  liquidHourlyRate Float?
 }
 
 // Work-related expenses
@@ -216,4 +218,6 @@ model ExpensesStatistics {
   totalExpenses            Float?
   netEarnings              Float?
   liquidEarningsPercentage Float?
+  avgGrossHourlyRate       Float?
+  avrLiquidHourlyRate      Float?
 }

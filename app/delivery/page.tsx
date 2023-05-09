@@ -1,6 +1,8 @@
 // 'use client';
 
+import Link from 'next/link';
 import DeliveryForm from '../components/DeliveryForm';
+import DeliveryList from '../components/DeliveryList';
 
 // IMPORTS FOR TRYING TO MAKE THIS PAGE ONLY ACCESSIBLE TO LOGGED IN USERS
 // import { useEffect } from 'react';
@@ -26,6 +28,8 @@ export default function Delivery() {
 
 	return (
 		<div className=" min-h-screen">
+			<DeliveryList />
+
 			<DeliveryForm />
 		</div>
 	);

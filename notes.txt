@@ -177,3 +177,28 @@ expenses_summary: This table holds summary information for all the expenses for 
 car_expenses_summary: This table holds summary information for all the car-related expenses for each month, including total gas spent, total services expenses, total loan payments, and total insurance cost.
 
 expenses_statistics: This table holds statistics for each month, including average cost per liter, total liters purchased, total spent after gas, average cost per km, average cost per day, and average cost per 30 days.
+
+
+
+
+structure for api folder
+api
+	- auth
+		- [...nextauth].ts
+	- delivery
+		- addDelivery.ts
+		- getDeliveries.ts
+		- deleteDelivery.ts
+		- updateDelivery.ts
+	- workExpense	=> for services in general
+		- addExpense.ts
+		- getExpenses.ts
+		- deleteExpense.ts
+		- updateExpense.ts
+	- personalCarExpense	=> for personal expenses (e.g finance car, insurance, etc)
+		- addCarExpense.ts
+		- getCarExpenses.ts
+		- deleteCarExpense.ts
+		- updateCarExpense.ts
+	- user
+		- addUser.ts

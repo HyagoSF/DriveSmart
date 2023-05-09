@@ -59,13 +59,6 @@ export default async function handler(
 		}
 	}
 
-	// // Find the post where the id is equal to the postId
-	// const post = await prisma.post.findUnique({
-	// 	where: {
-	// 		id: req.body.postId,
-	// 	},
-	// });
-
 	// Find the user where the email is equal to the session email
 	const user = await prisma.user.findUnique({
 		where: {
@@ -73,28 +66,17 @@ export default async function handler(
 		},
 	});
 
-
 	try {
-		// // Add the delivery to this day and user
-		// const newComment = await prisma.comment.create({
-		// 	data: {
-		// 		text: text,
-		// 		post: {
-		// 			// connect the comment to the post
-		// 			connect: {
-		// 				id: post.id,
-		// 			},
-		// 		},
-		// 		user: {
-		// 			// connect the comment to the user
-		// 			connect: {
-		// 				id: user.id,
-		// 			},
-		// 		},
-		// 		// organize the comments by the date they were created
-		// 		createdAt: new Date(),
-		// 	},
-		// });
+		// calculate the gross hourly rate and the liquid one and add them to the db
+		const grossHourlyRate = +(
+			value.grossEarnings / value.totalHours
+		).toFixed(2);
+
+		const liquidHourlyRate = +(
+			value.liquidEarnings / value.totalHours
+		).toFixed(2);
+
+		console.log(grossHourlyRate, liquidHourlyRate);
 
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({
@@ -107,6 +89,8 @@ export default async function handler(
 				liquidEarnings: value.liquidEarnings,
 				gasLiters: value.gasLiters,
 				gasSpent: value.gasSpent,
+				grossHourlyRate: grossHourlyRate,
+				liquidHourlyRate: liquidHourlyRate,
 				user: {
 					// connect the delivery to the user
 					connect: {
@@ -115,6 +99,31 @@ export default async function handler(
 				},
 			},
 		});
+
+		// TODO: get this delivery, get important parts to add it to the user's work expenses table
+		// const newExpense = await prisma.expense.create({
+		// 	data: {
+		// 		userId: user.id,
+		// 		expenseType: 'Gas',
+		// 		date: new Date(value.date),
+		// 		odometerReading: 1000,
+		// 		gasSpent: value.gasSpent,
+		// 		servicesExpenses: 0,
+		// 		otherExpenses: 0,
+		// 		delivery: {
+		// 			// connect the expense to the delivery
+		// 			connect: {
+		// 				id: newDelivery.id,
+		// 			},
+		// 		},
+		// 		user: {
+		// 			// connect the expense to the user
+		// 			connect: {
+		// 				id: user.id,
+		// 			},
+		// 		},
+		// 	},
+		// });
 
 		return res.status(200).json('Success');
 	} catch (error) {
