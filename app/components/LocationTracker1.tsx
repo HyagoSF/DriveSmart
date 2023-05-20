@@ -1,3 +1,6 @@
+'use client';
+
+import { motion as m } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
 
 interface Position {
@@ -5,7 +8,11 @@ interface Position {
 	longitude: number;
 }
 
-const LocationTracker: React.FC = () => {
+export default function LocationTracker1({
+	isDriving,
+}: {
+	isDriving: boolean;
+}) {
 	const [position, setPosition] = useState<Position | null>(null);
 	const [distance, setDistance] = useState<number>(0);
 
@@ -32,83 +39,89 @@ const LocationTracker: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const watchId = navigator.geolocation.watchPosition(
-			(position) => {
-				if (position.coords) {
-					if (position.coords.accuracy < 100) {
-						if (position.coords.speed > 0) {
-							if (position.timestamp > 0) {
-								if (
-									position.coords.latitude !==
-									position.coords.longitude
-								) {
+		if (isDriving) {
+			const watchId = navigator.geolocation.watchPosition(
+				(position) => {
+					if (position.coords) {
+						if (position.coords.accuracy < 100) {
+							if (position.coords.speed > 0) {
+								if (position.timestamp > 0) {
 									if (
-										position.coords.latitude !== null &&
-										position.coords.longitude !== null
+										position.coords.latitude !==
+										position.coords.longitude
 									) {
 										if (
-											position.coords.latitude !==
-												undefined &&
-											position.coords.longitude !==
-												undefined
+											position.coords.latitude !== null &&
+											position.coords.longitude !== null
 										) {
 											if (
 												position.coords.latitude !==
-													0 &&
-												position.coords.longitude !== 0
+													undefined &&
+												position.coords.longitude !==
+													undefined
 											) {
 												if (
-													!Number.isNaN(
-														position.coords.latitude
-													) &&
-													!Number.isNaN(
-														position.coords
-															.longitude
-													)
+													position.coords.latitude !==
+														0 &&
+													position.coords
+														.longitude !== 0
 												) {
 													if (
-														position.coords
-															.latitude !==
-															Infinity &&
-														position.coords
-															.longitude !==
-															Infinity
+														!Number.isNaN(
+															position.coords
+																.latitude
+														) &&
+														!Number.isNaN(
+															position.coords
+																.longitude
+														)
 													) {
 														if (
 															position.coords
 																.latitude !==
-																-Infinity &&
+																Infinity &&
 															position.coords
 																.longitude !==
-																-Infinity
+																Infinity
 														) {
 															if (
 																position.coords
 																	.latitude !==
-																	0.0 &&
+																	-Infinity &&
 																position.coords
 																	.longitude !==
-																	0.0
+																	-Infinity
 															) {
-																const {
-																	latitude,
-																	longitude,
-																} =
-																	position.coords;
 																if (
-																	!position
+																	position
 																		.coords
-																		.heading &&
-																	!position
+																		.latitude !==
+																		0.0 &&
+																	position
 																		.coords
-																		.altitude
+																		.longitude !==
+																		0.0
 																) {
-																	setPosition(
-																		{
-																			latitude,
-																			longitude,
-																		}
-																	);
+																	const {
+																		latitude,
+																		longitude,
+																	} =
+																		position.coords;
+																	if (
+																		!position
+																			.coords
+																			.heading &&
+																		!position
+																			.coords
+																			.altitude
+																	) {
+																		setPosition(
+																			{
+																				latitude,
+																				longitude,
+																			}
+																		);
+																	}
 																}
 															}
 														}
@@ -121,23 +134,23 @@ const LocationTracker: React.FC = () => {
 							}
 						}
 					}
+				},
+				(error) => {
+					console.log(error);
+				},
+				{
+					enableHighAccuracy: true,
+					timeout: 20000,
+					maximumAge: 1000,
+					distanceFilter: 10, // minimum distance (in meters) between updates
 				}
-			},
-			(error) => {
-				console.log(error);
-			},
-			{
-				enableHighAccuracy: true,
-				timeout: 20000,
-				maximumAge: 1000,
-				distanceFilter: 10, // minimum distance (in meters) between updates
-			}
-		);
+			);
 
-		return () => {
-			navigator.geolocation.clearWatch(watchId);
-		};
-	}, []);
+			return () => {
+				navigator.geolocation.clearWatch(watchId);
+			};
+		}
+	}, [isDriving]);
 
 	useEffect(() => {
 		if (position) {
@@ -169,29 +182,25 @@ const LocationTracker: React.FC = () => {
 		}
 	}, [position]);
 
-	const handleSaveDistance = async () => {
-		// send distance to server to save in database
-		const response = await fetch('/api/save-distance', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ distance }),
-		});
-
-		if (response.ok) {
-			console.log('Distance saved successfully');
-		} else {
-			console.log('Error saving distance');
-		}
-	};
-
 	return (
-		<div>
-			<p>Distance traveled: {distance} meters</p>
-			<button onClick={handleSaveDistance}>Save distance</button>
-		</div>
+		<>
+			{isDriving && (
+				<m.div
+					className="bg-white rounded  p-4"
+					initial={{
+						x: '-100%',
+					}}
+					animate={{
+						x: '0',
+					}}
+					transition={{ duration: 0.5 }}>
+					<h1 className="flex gap-4 justify-center">
+						<span className="text-red-700 text-4xl">
+							{distance} km
+						</span>
+					</h1>
+				</m.div>
+			)}
+		</>
 	);
-};
-
-export default LocationTracker;
+}

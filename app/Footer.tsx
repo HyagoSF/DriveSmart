@@ -63,12 +63,12 @@ export default async function Footer() {
 					<Receipt size={32} />
 					Work
 				</Link>
-				<Link
+				{/* <Link
 					href="carExpense"
 					className="flex flex-col items-center justify-center text-center w-12">
 					<Receipt size={32} />
 					Personal
-				</Link>
+				</Link> */}
 			</ul>
 		</footer>
 	);
