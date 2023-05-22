@@ -6,20 +6,25 @@ import { useState } from 'react';
 
 export default function PopUpEarnings({
 	setShowStopDriveModal,
-	setIsDriving,
+	setGrossEarnings,
+	grossEarnings,
+	setTotalKms,
+	totalKms,
 }: // showModal,
 // onRealDelete,
 // postId,
 
 {
 	setShowStopDriveModal: Function;
-	setIsDriving: Function;
+	setGrossEarnings: Function;
+	grossEarnings: number | null;
+	setTotalKms: Function;
+	totalKms: number;
+
 	// showModal: Function;
 	// onRealDelete: Function;
 	// postId: string;
 }) {
-	const [grossEarnings, setGrossEarnings] = useState<number | null>(null);
-
 	const initial = {
 		y: '-100%',
 	};
@@ -30,12 +35,25 @@ export default function PopUpEarnings({
 		y: '0',
 	};
 
-	const handleGrossEarningsChange = (event: any) => {
-		setGrossEarnings(event.target.value);
+	const handleGrossEarningsChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setGrossEarnings(Number(event.target.value));
+	};
+
+	const handleTotalKmsChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const totalKms = Number(event.target.value);
+		if (totalKms === 0) {
+			setTotalKms(0);
+		}
+		setTotalKms(totalKms);
 	};
 
 	const handleEarnings = () => {
 		console.log('grossEarnings is:' + grossEarnings);
+		console.log('totalKms is:' + totalKms);
 		alert('Earnings saved');
 		setShowStopDriveModal(false);
 	};
@@ -84,8 +102,20 @@ export default function PopUpEarnings({
 					required
 				/>
 
+				<h1>Just temporary how many km you drove </h1>
+				<input
+					className="appearance-none block  bg-white text-gray-700 border border-gray-200 rounded py-2 px-4  leading-tight focus:outline-none focus:bg-gray-200"
+					id="gross_earnings"
+					name="gross_earnings"
+					value={totalKms === 0 ? '' : totalKms}
+					onChange={handleTotalKmsChange}
+					type="number"
+					placeholder="Enter total kms"
+					required
+				/>
+
 				<button
-					className=" text-lg w-32 bg-black text-white rounded-lg hover:text-white mb-8"
+					className=" text-lg w-32 bg-black text-white rounded-lg hover:text-white mb-8 px-2 py-1"
 					onClick={handleEarnings}>
 					Save Earnings
 				</button>

@@ -7,6 +7,9 @@ import { useState } from 'react';
 export default function PopUpFuelPrice({
 	setShowStartDriveModal,
 	setIsDriving,
+
+	gasPrice,
+	setGasPrice,
 }: // showModal,
 // onRealDelete,
 // postId,
@@ -14,12 +17,13 @@ export default function PopUpFuelPrice({
 {
 	setShowStartDriveModal: Function;
 	setIsDriving: Function;
+	gasPrice: number | null;
+	setGasPrice: Function;
+
 	// showModal: Function;
 	// onRealDelete: Function;
 	// postId: string;
 }) {
-	const [gasPrice, setGasPrice] = useState<number | null>(null);
-
 	const initial = {
 		y: '-100%',
 	};
@@ -86,7 +90,7 @@ export default function PopUpFuelPrice({
 				/>
 
 				<button
-					className=" text-lg w-32 bg-black text-white rounded-lg hover:text-white mb-8"
+					className=" text-lg w-32 bg-black text-white rounded-lg hover:text-white mb-8 px-2 py-1"
 					onClick={handleFuelPrice}>
 					Start
 				</button>

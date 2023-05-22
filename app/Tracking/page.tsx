@@ -1,7 +1,7 @@
 // 'use client';
 
 // import { start } from 'repl';
-// import React, { useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 // import Link from 'next/link';
 
 // export default function Tracking() {
@@ -28,6 +28,48 @@
 // 			}
 // 		);
 // 	}
+
+// 	// keep track of the distance every 10 seconds
+// 	useEffect(() => {
+// 		const intervalId = setInterval(() => {
+// 			if (watchId) {
+// 				navigator.geolocation.getCurrentPosition(
+// 					function (position) {
+// 						if (
+// 							position.coords &&
+// 							position.coords.latitude !== 0 &&
+// 							position.coords.longitude !== 0 &&
+// 							!isNaN(position.coords.latitude) &&
+// 							!isNaN(position.coords.longitude) &&
+// 							position.coords.latitude !== Infinity &&
+// 							position.coords.longitude !== Infinity &&
+// 							position.coords.latitude !== -Infinity &&
+// 							position.coords.latitude !== 0.0 &&
+// 							position.coords.longitude !== 0.0 &&
+// 							!position.coords.heading &&
+// 							!position.coords.altitude
+// 						) {
+// 							const { latitude, longitude } = position.coords;
+// 							setLocation({ lat: latitude, lon: longitude });
+// 						}
+// 					},
+// 					function (error) {
+// 						console.log(error);
+// 					},
+// 					{
+// 						enableHighAccuracy: true,
+// 						timeout: 20000,
+// 						maximumAge: 1000,
+// 						// distanceFilter: 10,  minimum distance (in meters) between updates
+// 					}
+// 				);
+// 			}
+// 		}, 10000); // update distance every 10 seconds
+
+// 		return () => {
+// 			clearInterval(intervalId);
+// 		};
+// 	}, []);
 
 // 	function startTracking() {
 // 		startPosition = null;
@@ -133,21 +175,17 @@
 // 			<Button onClick={showMeMyLocation} className={`ml-10`}>
 // 				Give me my current location
 // 			</Button>
-
-// 			<div className=" bg-gray-400 text-3xl">
-// 				<Link href="#">Home</Link>
-// 			</div>
 // 		</div>
 // 	);
 // }
 
-'use client';
+// // 'use client';
 
-import { start } from 'repl';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import LocationTracker1 from '../components/LocationTracker1';
+// // import { start } from 'repl';
+// // import React, { useState } from 'react';
+// // import Link from 'next/link';
+// // import LocationTracker1 from '../components/LocationTracker1';
 
-export default function Tracking() {
-	return <LocationTracker1 />;
-}
+// // export default function Tracking() {
+// // 	return <LocationTracker1 isDriving={true} />;
+// // }

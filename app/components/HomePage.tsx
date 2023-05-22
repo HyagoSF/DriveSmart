@@ -26,6 +26,11 @@ interface TimeDriving {
 export default function HomePage() {
 	const [isDriving, setIsDriving] = useState(false);
 
+	const [gasPrice, setGasPrice] = useState<number | null>(null);
+
+	const [grossEarnings, setGrossEarnings] = useState<number | null>(null);
+	const [totalKms, setTotalKms] = useState<number>(0);
+
 	// MODALS
 	// this modal is going to show when the user start drive and will ask for the fuel price
 	const [showStartDriveModal, setShowStartDriveModal] = useState(false);
@@ -43,9 +48,6 @@ export default function HomePage() {
 	// 		console.log(`was driving, now is not anymore`);
 	// 	}
 	// }, [isDriving]);
-	if (!isDriving) {
-		console.log(timeDriving);
-	}
 
 	// HANDLING THE CAR DRAG
 	const handleDragEnd = (event: any, info: { offset: { x: number } }) => {
@@ -114,13 +116,18 @@ export default function HomePage() {
 				<PopUpFuelPrice
 					setShowStartDriveModal={setShowStartDriveModal}
 					setIsDriving={setIsDriving}
+					gasPrice={gasPrice}
+					setGasPrice={setGasPrice}
 				/>
 			)}
 
 			{showStopDriveModal && (
 				<PopUpEarnings
 					setShowStopDriveModal={setShowStopDriveModal}
-					setIsDriving={setIsDriving}
+					setGrossEarnings={setGrossEarnings}
+					grossEarnings={grossEarnings}
+					setTotalKms={setTotalKms}
+					totalKms={totalKms}
 				/>
 			)}
 

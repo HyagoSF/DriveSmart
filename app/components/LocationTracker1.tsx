@@ -186,7 +186,7 @@ export default function LocationTracker1({
 		<>
 			{isDriving && (
 				<m.div
-					className="bg-white rounded  p-4"
+					className="bg-white rounded  p-4 min-h-screen"
 					initial={{
 						x: '-100%',
 					}}
@@ -199,6 +199,16 @@ export default function LocationTracker1({
 							{distance} km
 						</span>
 					</h1>
+					{/* <h1 className="flex gap-4 justify-center">
+						My Current location:{' '}
+						{position?.latitude
+							? position?.latitude
+							: 'no latitude found'}
+						,
+						{position?.longitude
+							? position?.longitude
+							: 'no longitude found'}
+					</h1> */}
 				</m.div>
 			)}
 		</>
