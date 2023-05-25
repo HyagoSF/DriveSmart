@@ -58,7 +58,8 @@ export default function MileageTracker() {
 	// This will run just once
 	useEffect(() => {
 		const mapScript = document.createElement('script');
-		mapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`;
+		// mapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`;
+		mapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCpMEKoIbnf0FIGlcl9-mM8WyNeCfJB7Js&libraries=places`;
 
 		mapScript.onload = initMap;
 		document.head.appendChild(mapScript);
@@ -145,19 +146,28 @@ export default function MileageTracker() {
 		if (response.routes && response.routes.length > 0) {
 			const route = response.routes[0];
 
-			// For each route, get the distance and add to distance hook.
+			let totalDistance = 0;
+
 			for (let i = 0; i < route.legs.length; i++) {
-				const routeSegment = i + 1;
-
-				console.log(
-					`Route ${routeSegment}: ${route.legs[i].distance.text} meters`
-				);
-
-				setDistance(
-					(prevDistance) =>
-						prevDistance + route.legs[i].distance.value / 1000
-				);
+				totalDistance += route.legs[i].distance.value / 1000;
 			}
+
+			setDistance(totalDistance);
+			console.log('Total distance:', totalDistance);
+
+			// // For each route, get the distance and add to distance hook.
+			// for (let i = 0; i < route.legs.length; i++) {
+			// 	const routeSegment = i + 1;
+
+			// 	console.log(
+			// 		`Route ${routeSegment}: ${route.legs[i].distance.text} meters`
+			// 	);
+
+			// 	setDistance(
+			// 		(prevDistance) =>
+			// 			prevDistance + route.legs[i].distance.value / 1000
+			// 	);
+			// }
 		} else {
 			console.error('No route found.');
 		}
@@ -193,7 +203,7 @@ export default function MileageTracker() {
 					setTrackedLocations([]);
 
 					// just to see the next start location
-					console.log(startLocation);
+					// console.log(startLocation);
 				} else {
 					console.error('Directions request failed:', status);
 				}
