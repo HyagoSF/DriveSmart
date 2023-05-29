@@ -3,19 +3,12 @@
 
 import { Car } from 'lucide-react';
 
-import {
-	motion as m,
-	useMotionValue,
-	useTransform,
-	useDragControls,
-} from 'framer-motion';
-import { useEffect, useState } from 'react';
-import LocationTracker1 from './LocationTracker1';
+import { motion as m, useMotionValue, useDragControls } from 'framer-motion';
+import { useState } from 'react';
 import Stopwatch from './stopwatch';
 import PopUpFuelPrice from './PopUpFuelPrice';
 import PopUpEarnings from './PopUpEarnings';
-import { time } from 'console';
-// import usePrevious from '../hooks/usePrevious';
+import LocationTrackerWithoutCood from './LocationTrackerWithoutCood';
 
 interface TimeDriving {
 	hours?: number;
@@ -24,12 +17,18 @@ interface TimeDriving {
 }
 
 export default function HomePage() {
+	// STATES
 	const [isDriving, setIsDriving] = useState(false);
-
 	const [gasPrice, setGasPrice] = useState<number | null>(null);
-
 	const [grossEarnings, setGrossEarnings] = useState<number | null>(null);
+	// const [totalKms, setTotalKms] = useState<number>(0);
+
+	// for the location tracker
 	const [totalKms, setTotalKms] = useState<number>(0);
+	// const [tracking, setTracking] = useState(false);
+
+	// create state to get track of the sending data
+	const [sendingData, setSendingData] = useState(false);
 
 	// MODALS
 	// this modal is going to show when the user start drive and will ask for the fuel price
@@ -42,18 +41,10 @@ export default function HomePage() {
 	const handleX = useMotionValue(0);
 	const dragControls = useDragControls();
 
-	// useEffect(() => {
-	// 	if (!isDriving && prevIsDriving) {
-	// 		// sum up the time, hour+minute+second+millisecond and then console log it
-	// 		console.log(`was driving, now is not anymore`);
-	// 	}
-	// }, [isDriving]);
-
 	// HANDLING THE CAR DRAG
 	const handleDragEnd = (event: any, info: { offset: { x: number } }) => {
 		if (info.offset.x > 112.5) {
 			// if the user swipe the car at least at the middle of the screen, the car will start to drive
-			// setIsDriving(true);
 			setShowStartDriveModal(true);
 			handleX.set(225);
 		} else {
@@ -62,6 +53,17 @@ export default function HomePage() {
 			handleX.set(0);
 		}
 	};
+
+	// TODO: here is where I'm going to send the data to the database
+	if (sendingData) {
+		console.log({
+			totalKms: totalKms,
+			grossEarnings: grossEarnings,
+			timeDriving: timeDriving,
+			gasPrice: gasPrice,
+		});
+		setSendingData(false);
+	}
 
 	return (
 		<main className=" ">
@@ -74,8 +76,6 @@ export default function HomePage() {
 				className={`${
 					isDriving ? 'bg-green-500' : 'bg-white'
 				} items-center mx-4 mt-2 rounded`}>
-				{/* TODO: MAKE THIS CAR GO TO THE RIGHT WHEN THE USER CLICK TO START DRIVE, AND MAKE SOMETHING GREEN */}
-
 				<div className=" w-full">
 					{/* THIS IS WHAT I'M CHANGING */}
 					<div className="flex flex-row items-center justify-center p-2">
@@ -126,11 +126,11 @@ export default function HomePage() {
 					setShowStopDriveModal={setShowStopDriveModal}
 					setGrossEarnings={setGrossEarnings}
 					grossEarnings={grossEarnings}
-					setTotalKms={setTotalKms}
-					totalKms={totalKms}
+					setSendingData={setSendingData}
 				/>
 			)}
 
+			{/* STOPWATCH AND LOCATION TRACKER */}
 			<div className=" bg-white mx-4 rounded">
 				{/* I let this isDriving inside here, because if I let this outside, the stopwatch will not be triggered and will not send me the time  */}
 				{isDriving && (
@@ -152,7 +152,12 @@ export default function HomePage() {
 						setTimeDriving={setTimeDriving}
 						setShowStopDriveModal={setShowStopDriveModal}
 					/>
-					<LocationTracker1 isDriving={isDriving} />
+					{/* <LocationTracker1 isDriving={isDriving} /> */}
+					<LocationTrackerWithoutCood
+						isDriving={isDriving}
+						totalKms={totalKms}
+						setTotalKms={setTotalKms}
+					/>
 				</div>
 			</div>
 

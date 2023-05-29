@@ -1,37 +1,41 @@
 'use client';
 
-import { clear } from 'console';
 import { useEffect, useState } from 'react';
-import { start } from 'repl';
+import { motion as m } from 'framer-motion';
 
 interface locationType {
 	lat: number;
 	lng: number;
 }
 
-export default function MileageTracker() {
+export default function MileageTracker({
+	isDriving,
+	totalKms,
+	setTotalKms,
+}: {
+	isDriving: boolean;
+	totalKms: number;
+	setTotalKms: Function;
+}) {
 	const [map, setMap] = useState(null);
 	const [directionsService, setDirectionsService] =
-		useState<google.maps.DirectionsService>(null);
+		useState<google.maps.DirectionsService | null>(null);
 
 	const [directionsRenderer, setDirectionsRenderer] =
-		useState<google.maps.DirectionsRenderer>(null);
+		useState<google.maps.DirectionsRenderer | null>(null);
 
 	const [startLocation, setStartLocation] = useState<locationType | null>(
 		null
 	);
 	const [endLocation, setEndLocation] = useState<locationType | null>(null);
-	const [distance, setDistance] = useState(0);
-	// const [trackedLocations, setTrackedLocations] = useState<locationType[]>(
-	// 	[]
-	// );
 
 	// to store the user's tracked locations
 	const [locations, setLocations] = useState<locationType[]>([]);
-	// track whether the user is tracking or not
-	const [tracking, setTracking] = useState(false);
+
 	// to store the ID of the interval used for geolocation updates
-	const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
+	const [intervalId, setIntervalId] = useState<any>(null);
+	// this isTracking is to control isDriving inside this component without needing to change isDriving
+	const [isTracking, setIsTracking] = useState(false);
 
 	const mapOptions = {
 		center: { lat: 43.629, lng: -79.489 },
@@ -62,9 +66,18 @@ export default function MileageTracker() {
 		}
 	}, [locations]);
 
+	// useEffect to call the start and stop based on if the user is driving or not
+	useEffect(() => {
+		if (isDriving) {
+			startTracking();
+		} else {
+			stopTracking();
+		}
+	}, [isDriving]);
+
 	const initMap = () => {
 		const mapInstance = new google.maps.Map(
-			document.getElementById('map'),
+			document.querySelector('#map'),
 			mapOptions
 		);
 		setMap(mapInstance);
@@ -82,18 +95,20 @@ export default function MileageTracker() {
 	};
 
 	const startTracking = () => {
-		if (!tracking) {
+		if (!isTracking) {
 			console.log('Starting tracking...');
 
-			// reset the locations and distance when starting a new tracking session
+			// reset the locations and totalKms when starting a new tracking session
 			setLocations([]);
-			setDistance(0);
+			setTotalKms(0);
 
 			// Track the user's location every 10 seconds
 			const id = setInterval(() => {
 				navigator.geolocation.getCurrentPosition((position) => {
 					const { latitude, longitude } = position.coords;
 					const newLocation = { lat: +latitude, lng: +longitude };
+					// console.log(locations);
+					// console.log(locations.length);
 
 					if (locations.length === 0) {
 						setStartLocation(newLocation);
@@ -105,17 +120,21 @@ export default function MileageTracker() {
 					]);
 				});
 
-				console.log('Tracking...');
-				// }, 5 * 60 * 1000); // 5 minutes
-			}, 10000); //	10 seconds
+				// console.log('Tracking...');
 
-			setTracking(true);
+				// TODO: send request every 5 minutes, 10 seconds is just for testing
+				// }, 5 * 60 * 1000); // 5 minutes
+			}, 1000); //	10 seconds
+
+			setIsTracking(true);
 			setIntervalId(id);
+		} else {
+			console.log('is already driving, so not starting tracking');
 		}
 	};
 
 	const stopTracking = () => {
-		if (tracking) {
+		if (isTracking) {
 			console.log('Stopping tracking...');
 
 			clearInterval(intervalId);
@@ -137,11 +156,14 @@ export default function MileageTracker() {
 				}
 			});
 
-			setTracking(false);
+			setIsTracking(false);
 			setIntervalId(null);
+		} else {
+			console.log('is not driving, so not stopping tracking');
 		}
 	};
 
+	// I'll execute this just when the user stop driving
 	const handleStartTracking = () => {
 		console.log('Start sending request...');
 
@@ -149,14 +171,12 @@ export default function MileageTracker() {
 		// console.log('End location:', endLocation);
 		// console.log('Locations:', locations);
 		if (startLocation && endLocation) {
-			// to make waypoints work ✅
-
 			const waypts: google.maps.DirectionsWaypoint[] = [];
 
 			const numLocations = locations.length;
 
 			// Checking if the number of locations is equal to 25
-			if (numLocations === 25 || (tracking && numLocations > 1)) {
+			if (numLocations === 25 || (isTracking && numLocations > 1)) {
 				// for loop to ignore the first and last location(just get the waypoints)
 				for (let i = 1; i < numLocations - 1; i++) {
 					waypts.push({
@@ -169,12 +189,12 @@ export default function MileageTracker() {
 					origin: startLocation,
 					destination: endLocation,
 					waypoints: waypts,
-					travelMode: 'DRIVING',
+					travelMode: google.maps.TravelMode.DRIVING,
 				};
 
-				directionsService.route(request, (result, status) => {
+				directionsService?.route(request, (result, status) => {
 					if (status === 'OK') {
-						directionsRenderer.setDirections(result);
+						directionsRenderer?.setDirections(result);
 						// console.log(result);
 						calculateDistance(result);
 
@@ -199,31 +219,49 @@ export default function MileageTracker() {
 	};
 
 	// calculate the distance total ✅
-	const calculateDistance = (response) => {
+	const calculateDistance = (response: any) => {
 		if (response.routes && response.routes.length > 0) {
 			const route = response.routes[0];
 
-			let totalDistance = 0;
+			let totalKms = 0;
 
 			for (let i = 0; i < route.legs.length; i++) {
-				totalDistance += route.legs[i].distance.value / 1000;
+				totalKms += route.legs[i].distance.value / 1000;
 			}
 
-			setDistance(totalDistance);
-			console.log('Total distance:', totalDistance);
+			setTotalKms(+totalKms.toFixed(2));
+			console.log('Total distance:', totalKms);
 		} else {
 			console.error('No route found.');
 		}
 	};
 
 	return (
-		<div>
-			<div id="map" style={{ width: '100%', height: '400px' }}></div>
-
-			<button onClick={startTracking}>Start Tracking</button>
-			<button onClick={stopTracking}>Stop Tracking</button>
-
-			<div>Distance: {distance.toFixed(2)} Km</div>
-		</div>
+		<>
+			<div
+				id="map"
+				style={{
+					display: 'none',
+					width: '100%',
+					height: '400px',
+				}}></div>
+			{isDriving && (
+				<m.div
+					className="bg-white rounded  p-4"
+					initial={{
+						x: '-100%',
+					}}
+					animate={{
+						x: '0',
+					}}
+					transition={{ duration: 0.5 }}>
+					<h1 className="flex gap-4 justify-center">
+						<span className="text-red-700 text-4xl">
+							{totalKms} km
+						</span>
+					</h1>
+				</m.div>
+			)}
+		</>
 	);
 }

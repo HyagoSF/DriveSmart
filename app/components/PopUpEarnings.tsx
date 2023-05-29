@@ -8,8 +8,7 @@ export default function PopUpEarnings({
 	setShowStopDriveModal,
 	setGrossEarnings,
 	grossEarnings,
-	setTotalKms,
-	totalKms,
+	setSendingData,
 }: // showModal,
 // onRealDelete,
 // postId,
@@ -18,8 +17,7 @@ export default function PopUpEarnings({
 	setShowStopDriveModal: Function;
 	setGrossEarnings: Function;
 	grossEarnings: number | null;
-	setTotalKms: Function;
-	totalKms: number;
+	setSendingData: Function;
 
 	// showModal: Function;
 	// onRealDelete: Function;
@@ -41,20 +39,10 @@ export default function PopUpEarnings({
 		setGrossEarnings(Number(event.target.value));
 	};
 
-	const handleTotalKmsChange = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		const totalKms = Number(event.target.value);
-		if (totalKms === 0) {
-			setTotalKms(0);
-		}
-		setTotalKms(totalKms);
-	};
 
 	const handleEarnings = () => {
+		setSendingData(true);
 		console.log('grossEarnings is:' + grossEarnings);
-		console.log('totalKms is:' + totalKms);
-		alert('Earnings saved');
 		setShowStopDriveModal(false);
 	};
 
@@ -99,18 +87,6 @@ export default function PopUpEarnings({
 					type="number"
 					step="0.01"
 					placeholder="Enter your earnings"
-					required
-				/>
-
-				<h1>Just temporary how many km you drove </h1>
-				<input
-					className="appearance-none block  bg-white text-gray-700 border border-gray-200 rounded py-2 px-4  leading-tight focus:outline-none focus:bg-gray-200"
-					id="gross_earnings"
-					name="gross_earnings"
-					value={totalKms === 0 ? '' : totalKms}
-					onChange={handleTotalKmsChange}
-					type="number"
-					placeholder="Enter total kms"
 					required
 				/>
 
