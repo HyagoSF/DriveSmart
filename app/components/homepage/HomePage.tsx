@@ -142,13 +142,13 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 	// TODO: here is where I'm going to send the data to the database
 	if (sendingData) {
-		console.log({
-			totalKms: totalKms,
-			grossEarnings: grossEarnings,
-			timeDriving: timeDriving,
-			gasPrice: gasPrice,
-			fuelConsumption: fuelConsumption,
-		});
+		// console.log({
+		// 	totalKms: totalKms,
+		// 	grossEarnings: grossEarnings,
+		// 	timeDriving: timeDriving,
+		// 	gasPrice: gasPrice,
+		// 	fuelConsumption: fuelConsumption,
+		// });
 
 		onSubmitFormHandler();
 
@@ -156,7 +156,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 	}
 
 	return (
-		<main className=" ">
+		<main>
 			{/* Content */}
 
 			<Toaster position="top-center" reverseOrder={false} />
@@ -198,8 +198,6 @@ export default function HomePage({ session }: { session: SessionType }) {
 							<p className="font-bold mr-4">SWIPE BACK TO STOP</p>
 						)}
 					</div>
-
-					{/* TODO: MAKE THIS A DIFFERENT COMPONENT TO SHOW JUST WHEN THE USER IS DRIVING */}
 				</div>
 			</div>
 

@@ -137,7 +137,7 @@ model Delivery {
   userId           String
   date             DateTime // Date of the delivery (YYYY-MM-DD)
   totalHours       Float
-  totalKms         Int
+  totalKms         Float
   grossEarnings    Float
   liquidEarnings   Float?
   gasPrice         Decimal  @db.Decimal(4, 3) // 4 digits, 3 decimals
