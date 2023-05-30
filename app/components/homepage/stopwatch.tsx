@@ -1,6 +1,6 @@
 import { motion as m } from 'framer-motion';
 import React, { useState, useEffect } from 'react';
-import usePrevious from '../hooks/usePrevious';
+import usePrevious from '../../hooks/usePrevious';
 
 const Stopwatch = ({
 	isDriving,

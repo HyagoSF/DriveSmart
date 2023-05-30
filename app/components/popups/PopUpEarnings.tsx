@@ -5,23 +5,19 @@ import { Fuel, AlertTriangle, Banknote } from 'lucide-react';
 import { useState } from 'react';
 
 export default function PopUpEarnings({
+	grossEarnings,
+	fuelConsumption,
 	setShowStopDriveModal,
 	setGrossEarnings,
-	grossEarnings,
 	setSendingData,
-}: // showModal,
-// onRealDelete,
-// postId,
-
-{
+	setFuelConsumption,
+}: {
+	fuelConsumption: number | null;
+	grossEarnings: number | null;
 	setShowStopDriveModal: Function;
 	setGrossEarnings: Function;
-	grossEarnings: number | null;
 	setSendingData: Function;
-
-	// showModal: Function;
-	// onRealDelete: Function;
-	// postId: string;
+	setFuelConsumption: Function;
 }) {
 	const initial = {
 		y: '-100%',
@@ -36,11 +32,21 @@ export default function PopUpEarnings({
 	const handleGrossEarningsChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		setGrossEarnings(Number(event.target.value));
+		setGrossEarnings(+event.target.value);
 	};
 
+	const handleFuelConsumptionChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setFuelConsumption(+event.target.value);
+	};
 
 	const handleEarnings = () => {
+		if (!grossEarnings || !fuelConsumption) {
+			alert('Please enter your earnings and fuel consumption');
+			return;
+		}
+
 		setSendingData(true);
 		console.log('grossEarnings is:' + grossEarnings);
 		setShowStopDriveModal(false);
@@ -82,11 +88,27 @@ export default function PopUpEarnings({
 					className="appearance-none block  bg-white text-gray-700 border border-gray-200 rounded py-2 px-4  leading-tight focus:outline-none focus:bg-gray-200"
 					id="gross_earnings"
 					name="gross_earnings"
-					value={grossEarnings === null ? '' : grossEarnings}
+					// value={grossEarnings === null ? '' : grossEarnings}
 					onChange={handleGrossEarningsChange}
 					type="number"
 					step="0.01"
 					placeholder="Enter your earnings"
+					required
+				/>
+
+				<h1 className=" font-bold text-gray-700 mx-4">
+					LITERS OF GAS PER 100 KM USED
+				</h1>
+
+				<input
+					className="appearance-none block  bg-white text-gray-700 border border-gray-200 rounded py-2 px-4  leading-tight focus:outline-none focus:bg-gray-200"
+					id="gross_earnings"
+					name="gross_earnings"
+					// value={fuelConsumption === null ? '' : fuelConsumption}
+					onChange={handleFuelConsumptionChange}
+					type="number"
+					step="0.01"
+					placeholder="Fuel Consumption"
 					required
 				/>
 

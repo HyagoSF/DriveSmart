@@ -34,27 +34,23 @@ export default function PopUpFuelPrice({
 		y: '0',
 	};
 
-	const [gasPriceThisFile, setGasPriceThisFile] = useState<number | string>();
-
-	// let gasPriceThisFile = '';
-
 	const handleGasPriceChange = (event: any) => {
-		// console.log('gasPriceThisFile is:' + gasPriceThisFile);
-		// setGasPriceThisFile(event.target.value);
 		setGasPrice(+event.target.value);
-		// gasPriceThisFile = event.target.value;
 	};
 
 	const handleFuelPrice = () => {
-		// showModal(true);
+		// just to make sure that the user has entered a gas price
+		if (!gasPrice) {
+			alert('Please enter a gas price');
+			return;
+		}
+
 		setIsDriving(true);
-		console.log('gasPrice is:' + gasPrice);
 		setShowStartDriveModal(false);
 		// onRealDelete(postId);
 	};
 
 	const startDrivingHandler = () => {
-		// setGasPrice(+gasPriceThisFile);
 		setShowStartDriveModal(false);
 	};
 
@@ -91,7 +87,7 @@ export default function PopUpFuelPrice({
 					className="appearance-none block  bg-white text-gray-700 border border-gray-200 rounded py-2 px-4  leading-tight focus:outline-none focus:bg-gray-200"
 					id="gas_price"
 					name="gas_price"
-					value={gasPriceThisFile}
+					// value={gasPriceThisFile}
 					onChange={handleGasPriceChange}
 					type="number"
 					step="0.001"

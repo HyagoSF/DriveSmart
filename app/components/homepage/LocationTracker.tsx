@@ -8,7 +8,7 @@ interface locationType {
 	lng: number;
 }
 
-export default function MileageTracker({
+export default function LocationTracker({
 	isDriving,
 	totalKms,
 	setTotalKms,
@@ -86,17 +86,14 @@ export default function MileageTracker({
 			new google.maps.DirectionsRenderer({ map: mapInstance })
 		);
 
-		if (navigator.geolocation) {
-			console.log('Geolocation is supported!');
-			// startTracking();
-		} else {
+		if (!navigator.geolocation) {
 			console.error('Geolocation is not supported by this browser.');
 		}
 	};
 
 	const startTracking = () => {
 		if (!isTracking) {
-			console.log('Starting tracking...');
+			// console.log('Starting tracking...');
 
 			// reset the locations and totalKms when starting a new tracking session
 			setLocations([]);
@@ -158,8 +155,6 @@ export default function MileageTracker({
 
 			setIsTracking(false);
 			setIntervalId(null);
-		} else {
-			console.log('is not driving, so not stopping tracking');
 		}
 	};
 
@@ -247,7 +242,7 @@ export default function MileageTracker({
 				}}></div>
 			{isDriving && (
 				<m.div
-					className="bg-white rounded  p-4"
+					className="bg-white rounded p-4"
 					initial={{
 						x: '-100%',
 					}}

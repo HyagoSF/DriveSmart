@@ -136,7 +136,7 @@ model Delivery {
   user             User     @relation(fields: [userId], references: [id])
   userId           String
   date             DateTime // Date of the delivery (YYYY-MM-DD)
-  totalHours       Int
+  totalHours       Float
   totalKms         Int
   grossEarnings    Float
   liquidEarnings   Float?

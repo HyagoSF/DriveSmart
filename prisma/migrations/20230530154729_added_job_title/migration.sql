@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Delivery" ALTER COLUMN "totalHours" SET DATA TYPE DOUBLE PRECISION;

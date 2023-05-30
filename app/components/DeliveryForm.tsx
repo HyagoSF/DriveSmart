@@ -8,19 +8,7 @@ import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { DollarSign } from 'lucide-react';
 
-type Dollars = number | null;
-type Liters = number | null;
-
-type allVariablesMine = {
-	date: string;
-	totalHours: number;
-	totalKms: number;
-	grossEarnings: Dollars;
-	liquidEarnings: Dollars;
-	gasPrice: Dollars;
-	gasLiters: Liters;
-	gasSpent: Dollars;
-};
+import { StatisticsType, Dollars, Liters } from '../types/StatisticsType';
 
 export default function DeliveryForm() {
 	// const [title, setTitle] = useState('');
@@ -163,8 +151,8 @@ export default function DeliveryForm() {
 			liquidEarnings,
 			gasLiters,
 			gasSpent,
-		}: allVariablesMine) => {
-			await axios.post('/api/delivery/addDelivery', {
+		}: StatisticsType) => {
+			await axios.post('/api/delivery/addDeliveryForm', {
 				value: {
 					date,
 					totalHours,

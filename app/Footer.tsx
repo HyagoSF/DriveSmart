@@ -52,10 +52,10 @@ export default async function Footer() {
 					Home
 				</Link>
 				<Link
-					href="delivery"
+					href="statistics"
 					className="flex flex-col items-center justify-center text-center w-12">
 					<DollarSign size={32} />
-					Delivery
+					Statistics
 				</Link>
 				<Link
 					href="expense"

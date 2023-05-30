@@ -8,53 +8,43 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const session = await getServerSession(req, res, authOptions);
+	// Get the session from the request
+	// const session = await getServerSession(req, res, authOptions);
 
-	// console.log(session);
-
-	// const { value } = req.body;
-	// console.log(value + ' Is my Value');
+	// Get the value object from the request body
 	const { value } = req.body;
-	// console.log(value);
-
-	/*
-	I'm getting it:
-	{
-		date: '2023-04-13',
-		totalHours: 3,
-		totalKms: 3,
-		grossEarnings: 3,
-		gasPrice: 3,
-		liquidEarnings: 2.31,
-		gasLiters: 0.23,
-		gasSpent: 0.69
-	}
-	*/
 
 	// check if the user missed some field in the value object i got
 	for (const key in value) {
-		if (value[key] == 0 || value[key] == null || value[key] == undefined) {
-			switch (key) {
-				case 'totalHours':
-					return res
-						.status(400)
-						.json({ message: 'Total hours cannot be empty' });
-				case 'totalKms':
-					return res
-						.status(400)
-						.json({ message: 'Total kilometers cannot be empty' });
-				case 'grossEarnings':
-					return res
-						.status(400)
-						.json({ message: 'Gross earnings cannot be empty' });
-				case 'gasPrice':
-					return res
-						.status(400)
-						.json({ message: 'Gas price cannot be empty' });
-				default:
-					return res
-						.status(400)
-						.json({ message: 'Please fill the form' });
+		// just because the distance for now can be 0
+		if (key !== 'totalKms') {
+			if (
+				value[key] == 0 ||
+				value[key] == null ||
+				value[key] == undefined
+			) {
+				switch (key) {
+					case 'totalHours':
+						return res
+							.status(400)
+							.json({ message: 'Total hours cannot be empty' });
+					// case 'totalKms':
+					// 	return res
+					// 		.status(400)
+					// 		.json({ message: 'Total kilometers cannot be empty' });
+					case 'grossEarnings':
+						return res.status(400).json({
+							message: 'Gross earnings cannot be empty',
+						});
+					case 'gasPrice':
+						return res
+							.status(400)
+							.json({ message: 'Gas price cannot be empty' });
+					default:
+						return res
+							.status(400)
+							.json({ message: 'Please fill the form' });
+				}
 			}
 		}
 	}
@@ -62,35 +52,59 @@ export default async function handler(
 	// Find the user where the email is equal to the session email
 	const user = await prisma.user.findUnique({
 		where: {
-			email: session?.user?.email,
+			email: value.userEmailSession,
 		},
 	});
 
 	try {
-		// calculate the gross hourly rate and the liquid one and add them to the db
+		// fuelConsumption is the number of liters per 100 km => to calculate the gasLiters and gasSpent
+		const fuelConsumptionPerKm = value.fuelConsumption / 100; // this is the number of liters per km
+
+		// calculate the total liters of gas used
+		const gasLiters = +(value.totalKms * fuelConsumptionPerKm).toFixed(2);
+
+		// calculate the total money spent on gas
+		const gasSpent = +(gasLiters * value.gasPrice).toFixed(2);
+
+		// calculate the totalHours in decimal format
+		const totalHoursInDecimal = +(
+			value.totalHours.hours +
+			value.totalHours.minutes / 60 +
+			value.totalHours.seconds / 3600
+		).toFixed(2);
+
+		// calculate the liquid earnings
+		const liquidEarnings = +(value.grossEarnings - gasSpent).toFixed(2);
+
+		// calculate the grossHourlyRate
 		const grossHourlyRate = +(
-			value.grossEarnings / value.totalHours
+			value.grossEarnings / totalHoursInDecimal
 		).toFixed(2);
 
+		// calculate the liquidHourlyRate
 		const liquidHourlyRate = +(
-			value.liquidEarnings / value.totalHours
+			liquidEarnings / totalHoursInDecimal
 		).toFixed(2);
 
-		console.log(grossHourlyRate, liquidHourlyRate);
+		// change gasPrice to 3 decimal places
+		const gasPriceUpdated = +value.gasPrice.toFixed(3);
 
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({
 			data: {
-				date: new Date(value.date),
-				totalHours: value.totalHours,
+				date: new Date(), // get the date from today
+				// totalHours: totalHoursInDecimal * 100, // converting to decimal
+				totalHours: totalHoursInDecimal, // converting to decimal
 				totalKms: value.totalKms,
 				grossEarnings: value.grossEarnings,
-				gasPrice: value.gasPrice,
-				liquidEarnings: value.liquidEarnings,
-				gasLiters: value.gasLiters,
-				gasSpent: value.gasSpent,
+				gasPrice: gasPriceUpdated,
+
+				liquidEarnings: liquidEarnings,
+				gasLiters: gasLiters, // total liters of gas used
+				gasSpent: gasSpent, // total money spent on gas
 				grossHourlyRate: grossHourlyRate,
 				liquidHourlyRate: liquidHourlyRate,
+
 				user: {
 					// connect the delivery to the user
 					connect: {
@@ -127,8 +141,8 @@ export default async function handler(
 
 		return res.status(200).json('Success');
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 
-		return res.status(400).json({ error: 'Something went wrong' });
+		return res.status(400).json({ error: 'Something went wrong!' });
 	}
 }
