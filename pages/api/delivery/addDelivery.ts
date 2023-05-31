@@ -67,14 +67,14 @@ export default async function handler(
 		const gasSpent = +(gasLiters * value.gasPrice).toFixed(2);
 
 		// // calculate the totalHours in decimal format
-		// const totalHoursInDecimal = +(
-		// 	value.totalHours.hours +
-		// 	value.totalHours.minutes / 60 +
-		// 	value.totalHours.seconds / 3600
-		// ).toFixed(2);
+		const totalHoursInDecimal = +(
+			value.totalHours.hours +
+			value.totalHours.minutes / 60 +
+			value.totalHours.seconds / 3600
+		).toFixed(2);
 
 		// // Just debugging
-		const totalHoursInDecimal = 8;
+		// const totalHoursInDecimal = 8;
 
 		// calculate the liquid earnings
 		const liquidEarnings = +(value.grossEarnings - gasSpent).toFixed(2);
