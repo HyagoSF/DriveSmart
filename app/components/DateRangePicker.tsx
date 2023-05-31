@@ -29,7 +29,7 @@ export default function CustomDateRangePicker({
 	};
 
 	return (
-		<div className="my-4 flex flex-col md:flex-row justify-center items-center bg-white">
+		<div className="my-4 flex flex-col md:flex-row justify-center items-center">
 			<DatePicker
 				selected={startDate}
 				startDate={startDate}

@@ -57,7 +57,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 		if (info.offset.x > 157.5) {
 			// if the user swipe the car at least at the middle of the screen, the car will start to drive
 			setShowStartDriveModal(true);
-		handleX.set(315);
+			handleX.set(315);
 		} else {
 			// otherwise, the car will go back to the start position
 			setIsDriving(false);
@@ -265,7 +265,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 			<LastWorkDay />
 
-			<CurrentWeek />
+			{/* <CurrentWeek /> */}
 		</main>
 	);
 }

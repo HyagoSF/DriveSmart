@@ -2,21 +2,34 @@
 
 import { useEffect, useState } from 'react';
 import { motion as m } from 'framer-motion';
+import { init } from 'next/dist/compiled/@vercel/og/satori';
 
 interface locationType {
 	lat: number;
 	lng: number;
 }
 
+// const getGoogleMapsAPIKey = async () => {
+// 	const response = await fetch('/api/auth/googleMapsLoader');
+// 	const { googleMapsAPIKey } = await response.json();
+
+// 	return googleMapsAPIKey;
+// };
+
 export default function LocationTracker({
 	isDriving,
 	totalKms,
 	setTotalKms,
-}: {
+}: // googleMapsAPIKey,
+{
 	isDriving: boolean;
 	totalKms: number;
 	setTotalKms: Function;
+	// googleMapsAPIKey: string;
 }) {
+	// I was trying to get the google maps api key from the backend, but I couldn't get it to work
+	// const googleMapsAPIKey = getGoogleMapsAPIKey();
+
 	const [map, setMap] = useState(null);
 	const [directionsService, setDirectionsService] =
 		useState<google.maps.DirectionsService | null>(null);
@@ -42,10 +55,12 @@ export default function LocationTracker({
 		zoom: 10,
 	};
 
-	// This will run just once
+	// Fetching the google maps api key
+
+	// // This will run just once
 	useEffect(() => {
 		const mapScript = document.createElement('script');
-		// mapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`;
+		// mapScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsAPIKey}&libraries=places`;
 		mapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCpMEKoIbnf0FIGlcl9-mM8WyNeCfJB7Js&libraries=places`;
 
 		mapScript.onload = initMap;
@@ -77,7 +92,7 @@ export default function LocationTracker({
 
 	const initMap = () => {
 		const mapInstance = new google.maps.Map(
-			document.querySelector('#map'),
+			document.getElementById('map'),
 			mapOptions
 		);
 		setMap(mapInstance);
@@ -233,6 +248,7 @@ export default function LocationTracker({
 
 	return (
 		<>
+			{/* {directionsService && ( */}
 			<div
 				id="map"
 				style={{
@@ -240,6 +256,7 @@ export default function LocationTracker({
 					width: '100%',
 					height: '400px',
 				}}></div>
+			{/* )} */}
 			{isDriving && (
 				<m.div
 					className="bg-white rounded p-4"

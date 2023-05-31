@@ -12,6 +12,7 @@ import NavBarLogged from './auth/NavBarLogged';
 // import { RouteGuard } from './components/RouteGuard';
 import { useRouter } from 'next/navigation';
 
+
 // Adding the font to the page
 const openSans = Open_Sans({
 	weight: '400',
@@ -51,7 +52,10 @@ export default async function RootLayout({ children }) {
 
 					{session?.user && <Footer />}
 				</QueryWrapper>
+				
 			</body>
+
+			{/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpMEKoIbnf0FIGlcl9-mM8WyNeCfJB7Js&libraries=places"></script> */}
 		</html>
 	);
 }

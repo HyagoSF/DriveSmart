@@ -6,16 +6,16 @@ export default function SimpleStatisticsReport({
 	totalKms,
 	liquidHourlyRate,
 }: {
-	name: string;
+	name?: string;
 	dateFormatted: string;
 	liquidEarnings: number;
-	totalHours: number;
+	totalHours: string;
 	totalKms: number;
 	liquidHourlyRate: number;
 }) {
 	return (
 		<div className="bg-white rounded px-4 py-2 m-4 mt-4">
-			<h1 className="font-bold py-2">{name}:</h1>
+			<h1 className="font-bold py-2">{name ? `${name}:` : ''}</h1>
 
 			<div className=" grid grid-cols-5 gap-1">
 				<div className="flex flex-col justify-around bg-gray-400 items-center rounded text-gray-100 font-bold p-1 ">

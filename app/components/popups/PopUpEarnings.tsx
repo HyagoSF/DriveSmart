@@ -48,7 +48,7 @@ export default function PopUpEarnings({
 		}
 
 		setSendingData(true);
-		console.log('grossEarnings is:' + grossEarnings);
+		// console.log('grossEarnings is:' + grossEarnings);
 		setShowStopDriveModal(false);
 	};
 

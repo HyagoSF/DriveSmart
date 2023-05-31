@@ -20,32 +20,46 @@ export default async function handler(
 			},
 		});
 
-		const monthNames = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December',
-		];
-
 		try {
-			// get all the expenses for the user and send them to the client
-			const data = await prisma.delivery.findMany({
+            // get the current week sum of 
+
+			const data = await prisma.delivery.findFirst({
 				where: {
 					userId: user.id,
 				},
-				// organize the data by date
 				orderBy: {
 					date: 'desc',
 				},
 			});
+
+			// Formatting date
+			const monthNames = [
+				'January',
+				'February',
+				'March',
+				'April',
+				'May',
+				'June',
+				'July',
+				'August',
+				'September',
+				'October',
+				'November',
+				'December',
+			];
+			const monthIndex = data.date.getMonth();
+			const monthName = monthNames[monthIndex].toUpperCase();
+			const dayOfMonth = data.date.getDate();
+			const formattedDate = `${monthName} ${dayOfMonth}`;
+			data.date = formattedDate;
+
+			// formatting time
+
+			const hours = Math.floor(data.totalHours);
+			const minutes = Math.round((data.totalHours - hours) * 60);
+			data.totalHours = `${hours}h ${minutes}m`;
+
+			// console.log(data.date);
 
 			return res.status(200).json(data);
 
