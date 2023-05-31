@@ -21,45 +21,23 @@ export default async function Footer() {
 	// console.log(session);
 
 	return (
-		// <nav className="flex justify-between items-center py-8">
-		// 	<Link href={'/'}>
-		// 		<h1 className="font-bold text-4xl contrast-200 text-emerald-700">
-		// 			HiveFeed
-		// 		</h1>
-		// 	</Link>
-		// 	<ul className="flex items-center gap-6">
-		// 		{/* I can have a client component here inside this server component*/}
-
-		// 		{/* If the user is not NavBarLogged */}
-		// 		{!session?.user && <Login />}
-
-		// 		{/* If the user is NavBarLogged */}
-		// 		{session?.user && (
-		// 			<NavBarLogged
-		// 				name={session.user.name || ''}
-		// 				image={session.user.image || ''}
-		// 			/>
-		// 		)}
-		// 	</ul>
-		// </nav>
-
-		<footer className="flex flex-col items-center justify-center w-screen h-20 bg-white sticky bottom-0 ">
-			<ul className="flex flex-center justify-between w-screen p-4 py-2 ">
+		<footer className="flex flex-col items-center justify-center w-full h-20 bg-white sticky bottom-0 ">
+			<ul className="flex flex-center justify-between w-full p-4 py-2 ">
 				<Link
 					href="/"
-					className="flex flex-col items-center justify-center text-center w-12">
+					className="flex flex-col items-center justify-center text-center w-full">
 					<HomeIcon size={32} />
 					Home
 				</Link>
 				<Link
 					href="statistics"
-					className="flex flex-col items-center justify-center text-center w-12">
+					className="flex flex-col items-center justify-center text-center w-full">
 					<DollarSign size={32} />
 					Statistics
 				</Link>
 				<Link
 					href="expense"
-					className="flex flex-col items-center justify-center text-center w-12">
+					className="flex flex-col items-center justify-center text-center w-full">
 					<Receipt size={32} />
 					Work
 				</Link>

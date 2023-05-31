@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Delivery" ALTER COLUMN "totalKms" SET DATA TYPE DOUBLE PRECISION;

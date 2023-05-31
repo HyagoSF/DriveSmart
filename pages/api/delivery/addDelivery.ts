@@ -66,12 +66,15 @@ export default async function handler(
 		// calculate the total money spent on gas
 		const gasSpent = +(gasLiters * value.gasPrice).toFixed(2);
 
-		// calculate the totalHours in decimal format
-		const totalHoursInDecimal = +(
-			value.totalHours.hours +
-			value.totalHours.minutes / 60 +
-			value.totalHours.seconds / 3600
-		).toFixed(2);
+		// // calculate the totalHours in decimal format
+		// const totalHoursInDecimal = +(
+		// 	value.totalHours.hours +
+		// 	value.totalHours.minutes / 60 +
+		// 	value.totalHours.seconds / 3600
+		// ).toFixed(2);
+
+		// // Just debugging
+		const totalHoursInDecimal = 8;
 
 		// calculate the liquid earnings
 		const liquidEarnings = +(value.grossEarnings - gasSpent).toFixed(2);
@@ -87,7 +90,13 @@ export default async function handler(
 		).toFixed(2);
 
 		// change gasPrice to 3 decimal places
-		const gasPriceUpdated = +value.gasPrice.toFixed(3);
+		// const gasPriceUpdated = value.gasPrice.toFixed(3);
+
+		if (grossHourlyRate == Infinity || liquidHourlyRate == Infinity) {
+			return res.status(400).json({
+				message: 'Some values are too small to be saved',
+			});
+		}
 
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({
@@ -97,7 +106,8 @@ export default async function handler(
 				totalHours: totalHoursInDecimal, // converting to decimal
 				totalKms: value.totalKms,
 				grossEarnings: value.grossEarnings,
-				gasPrice: gasPriceUpdated,
+				// gasPrice: gasPriceUpdated,
+				gasPrice: value.gasPrice,
 
 				liquidEarnings: liquidEarnings,
 				gasLiters: gasLiters, // total liters of gas used
@@ -143,6 +153,6 @@ export default async function handler(
 	} catch (error) {
 		// console.log(error);
 
-		return res.status(400).json({ error: 'Something went wrong!' });
+		return res.status(400).json({ message: 'Something went wrong!' });
 	}
 }

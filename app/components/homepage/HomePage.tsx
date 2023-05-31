@@ -9,6 +9,7 @@ import Stopwatch from './stopwatch';
 import PopUpFuelPrice from '../popups/PopUpFuelPrice';
 import PopUpEarnings from '../popups/PopUpEarnings';
 import LocationTracker from './LocationTracker';
+import LastWorkDay from './lastworkday/LastWorkDay';
 
 // IMPORTING TYPES
 import { SessionType } from '../../types/SessionType';
@@ -20,6 +21,7 @@ import { StatisticsType, TimeDriving } from '@/app/types/StatisticsType';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import CurrentWeek from './currentweek/CurrentWeek';
 
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES
@@ -52,10 +54,10 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 	// HANDLING THE CAR DRAG
 	const handleDragEnd = (event: any, info: { offset: { x: number } }) => {
-		if (info.offset.x > 112.5) {
+		if (info.offset.x > 157.5) {
 			// if the user swipe the car at least at the middle of the screen, the car will start to drive
 			setShowStartDriveModal(true);
-			handleX.set(225);
+		handleX.set(315);
 		} else {
 			// otherwise, the car will go back to the start position
 			setIsDriving(false);
@@ -177,7 +179,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 								isDriving ? 'bg-green-500' : 'bg-white'
 							}`}
 							drag="x"
-							dragConstraints={{ left: 0, right: 225 }}
+							dragConstraints={{ left: 0, right: 315 }}
 							dragControls={dragControls}
 							dragElastic={0.08}
 							dragTransition={{
@@ -256,6 +258,14 @@ export default function HomePage({ session }: { session: SessionType }) {
 			{/* <div className=" bg-white m-2 rounded h-40">
 				<h1 className="text-2xl">This week small summary</h1>
 			</div> */}
+
+			<h1 className="font-bold text-center mt-24">
+				YOUR PREVIOUS TRACKS:
+			</h1>
+
+			<LastWorkDay />
+
+			<CurrentWeek />
 		</main>
 	);
 }
