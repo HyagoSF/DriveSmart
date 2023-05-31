@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import DateRangePicker from './DateRangePicker';
 import SimpleStatisticsReport from './homepage/SimpleStatisticsReport';
+import { StatisticsType } from '../types/StatisticsType';
 
 // all work expenses
 const allDelivery = async () => {
@@ -14,7 +15,7 @@ const allDelivery = async () => {
 
 export default function DeliveryList() {
 	const [showList, setShowList] = useState(false);
-	const [selectedDateRange, setSelectedDateRange] = useState(null);
+	const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
 
 	// I can add a type to useQuery to make it more specific
 	const { data, error, isLoading } = useQuery({
@@ -26,7 +27,7 @@ export default function DeliveryList() {
 		setShowList(!showList);
 	};
 
-	const handleDateRangeChange = (dateRange) => {
+	const handleDateRangeChange = (dateRange: any) => {
 		setSelectedDateRange(dateRange);
 	};
 
@@ -52,7 +53,7 @@ export default function DeliveryList() {
 	// first day of the selected date range
 	if (selectedDateRange !== null) {
 		if (selectedDateRange.startDate && selectedDateRange.endDate) {
-			filteredDeliveryDays = data?.filter((deliveryDay) => {
+			filteredDeliveryDays = data?.filter((deliveryDay: any) => {
 				if (!selectedDateRange) {
 					return true;
 				}

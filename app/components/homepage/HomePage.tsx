@@ -106,7 +106,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 		}: StatisticsType) => {
 			await axios.post('/api/delivery/addDelivery', {
 				value: {
-					userEmailSession: session.user.email,
+					userEmailSession: session.user?.email,
 					totalHours,
 					totalKms,
 					grossEarnings,

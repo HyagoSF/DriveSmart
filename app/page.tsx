@@ -10,6 +10,8 @@ import { authOptions } from '../pages/api/auth/[...nextauth]';
 export default async function Home() {
 	const session = await getServerSession(authOptions);
 
+	// console.log(session);
+
 	return (
 		<main className="min-h-screen">
 			{/* If the user is not Logged */}

@@ -275,7 +275,7 @@ export default function DeliveryForm() {
 							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white"
 							id="gross_earnings"
 							name="gross_earnings"
-							value={grossEarnings === 0 ? '' : grossEarnings}
+							value={grossEarnings === null ? '' : grossEarnings}
 							onChange={handleGrossEarningsChange}
 							type="number"
 							placeholder="Enter gross earnings"
@@ -292,7 +292,7 @@ export default function DeliveryForm() {
 							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
 							id="gas_price"
 							name="gas_price"
-							value={gasPrice === 0 ? '' : gasPrice}
+							value={gasPrice === null ? '' : gasPrice}
 							onChange={handleGasPriceChange}
 							type="number"
 							step="0.001"

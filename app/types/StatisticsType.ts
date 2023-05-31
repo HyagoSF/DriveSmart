@@ -8,9 +8,13 @@ export type TimeDriving = {
 };
 
 export interface StatisticsType {
-	totalHours: TimeDriving;
+	date?: Date | string;
+	liquidEarnings?: Dollars;
+	gasLiters?: Liters;
+	gasSpent?: Dollars;
+	totalHours: any;
 	totalKms: number;
 	grossEarnings: Dollars;
 	gasPrice: Dollars;
-	fuelConsumption: Liters;
+	fuelConsumption?: Liters;
 }

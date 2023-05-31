@@ -92,10 +92,10 @@ export default function LocationTracker({
 
 	const initMap = () => {
 		const mapInstance = new google.maps.Map(
-			document.getElementById('map'),
+			document.getElementById('map') as HTMLElement,
 			mapOptions
 		);
-		setMap(mapInstance);
+		setMap(mapInstance as any);
 		setDirectionsService(new google.maps.DirectionsService());
 		setDirectionsRenderer(
 			new google.maps.DirectionsRenderer({ map: mapInstance })
@@ -190,7 +190,7 @@ export default function LocationTracker({
 				// for loop to ignore the first and last location(just get the waypoints)
 				for (let i = 1; i < numLocations - 1; i++) {
 					waypts.push({
-						location: locations[i],
+						location: locations[i] as any,
 						stopover: true,
 					});
 				}
