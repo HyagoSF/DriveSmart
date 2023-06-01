@@ -1,5 +1,4 @@
 // this page is going to be the first page, the login page
-// 'use client';
 
 import Login from './auth/Login';
 import HomePage from './components/homepage/HomePage';

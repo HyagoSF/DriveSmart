@@ -9,7 +9,6 @@ import QueryWrapper from './auth/QueryWrapper';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../pages/api/auth/[...nextauth]';
 import NavBarLogged from './auth/NavBarLogged';
-// import { RouteGuard } from './components/RouteGuard';
 import { useRouter } from 'next/navigation';
 
 

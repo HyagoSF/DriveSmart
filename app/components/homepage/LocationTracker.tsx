@@ -10,8 +10,7 @@ interface locationType {
 }
 
 // const getGoogleMapsAPIKey = async () => {
-// 	const response = await fetch('/api/auth/googleMapsLoader');
-// 	const { googleMapsAPIKey } = await response.json();
+// 	const response = await fetch('/api/auth/googleMapsLoad
 
 // 	return googleMapsAPIKey;
 // };

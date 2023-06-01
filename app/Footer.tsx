@@ -10,15 +10,8 @@ import {
 	Receipt,
 } from 'lucide-react';
 
-// import Login from './Login';
-// import NavBarLogged from './NavBarLogged';
-
-// import { getServerSession } from 'next-auth/next';
-// import { authOptions } from '../../pages/api/auth/[...nextauth].js';
 
 export default async function Footer() {
-	// const session = await getServerSession(authOptions);
-	// console.log(session);
 
 	return (
 		<footer className="flex flex-col items-center justify-center w-full h-20 bg-white sticky bottom-0 ">

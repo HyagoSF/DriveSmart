@@ -1,15 +1,10 @@
 import { NextApiResponse, NextApiRequest } from 'next';
-import { getServerSession } from 'next-auth';
-
 import prisma from '../../../prisma/client';
-import { authOptions } from '../auth/[...nextauth].js';
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	// Get the session from the request
-	// const session = await getServerSession(req, res, authOptions);
 
 	// Get the value object from the request body
 	const { value } = req.body;
@@ -28,10 +23,6 @@ export default async function handler(
 						return res
 							.status(400)
 							.json({ message: 'Total hours cannot be empty' });
-					// case 'totalKms':
-					// 	return res
-					// 		.status(400)
-					// 		.json({ message: 'Total kilometers cannot be empty' });
 					case 'grossEarnings':
 						return res.status(400).json({
 							message: 'Gross earnings cannot be empty',

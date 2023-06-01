@@ -12,6 +12,7 @@ import PopUpFuelPrice from '../popups/PopUpFuelPrice';
 import PopUpEarnings from '../popups/PopUpEarnings';
 import LocationTracker from './LocationTracker';
 import LastWorkDay from './lastworkday/LastWorkDay';
+import Stopwatch from './stopwatch';
 
 // IMPORTING TYPES
 import { SessionType } from '../../types/SessionType';
@@ -24,7 +25,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CurrentWeek from './currentweek/CurrentWeek';
-import Stopwatch from './Stopwatch';
 
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES
