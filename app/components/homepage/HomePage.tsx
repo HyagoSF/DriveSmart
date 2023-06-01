@@ -5,7 +5,9 @@
 import { Car } from 'lucide-react';
 import { motion as m, useMotionValue, useDragControls } from 'framer-motion';
 import { useState } from 'react';
-import Stopwatch from './stopwatch';
+
+import Stopwatch from './Stopwatch';
+
 import PopUpFuelPrice from '../popups/PopUpFuelPrice';
 import PopUpEarnings from '../popups/PopUpEarnings';
 import LocationTracker from './LocationTracker';
