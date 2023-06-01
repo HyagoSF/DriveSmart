@@ -6,7 +6,7 @@ import { Car } from 'lucide-react';
 import { motion as m, useMotionValue, useDragControls } from 'framer-motion';
 import { useState } from 'react';
 
-import Stopwatch from '../homepage/Stopwatch';
+
 
 import PopUpFuelPrice from '../popups/PopUpFuelPrice';
 import PopUpEarnings from '../popups/PopUpEarnings';
@@ -24,6 +24,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CurrentWeek from './currentweek/CurrentWeek';
+import Stopwatch from './Stopwatch';
 
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import usePrevious from '../../hooks/usePrevious';
 import axios from 'axios';
 
-const Stopwatch = ({
+export default function Stopwatch({
 	isDriving,
 	setTimeDriving,
 	setShowStopDriveModal,
@@ -13,7 +13,7 @@ const Stopwatch = ({
 	isDriving: Boolean;
 	setTimeDriving: Function;
 	setShowStopDriveModal: Function;
-}) => {
+}) {
 	// state to store time
 	const [time, setTime] = useState(0);
 	const prevIsDriving = usePrevious(isDriving);
@@ -104,6 +104,4 @@ const Stopwatch = ({
 			)}
 		</>
 	);
-};
-
-export default Stopwatch;
+}
