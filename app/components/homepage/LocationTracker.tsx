@@ -135,7 +135,7 @@ export default function LocationTracker({
 				console.log('Tracking...');
 
 				// TODO: send request every 5 minutes, 10 seconds is just for testing
-				}, 5 * 60 * 1000); // 5 minutes
+			}, 5 * 60 * 1000); // 5 minutes
 			// }, 1000); //	10 seconds
 
 			setIsTracking(true);
