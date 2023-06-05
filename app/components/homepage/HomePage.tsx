@@ -6,8 +6,6 @@ import { Car } from 'lucide-react';
 import { motion as m, useMotionValue, useDragControls } from 'framer-motion';
 import { useState } from 'react';
 
-
-
 import PopUpFuelPrice from '../popups/PopUpFuelPrice';
 import PopUpEarnings from '../popups/PopUpEarnings';
 import LocationTracker from './LocationTracker';
@@ -25,6 +23,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CurrentWeek from './currentweek/CurrentWeek';
+import Stopwatch1 from './Stopwatch1';
 
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES
@@ -244,7 +243,13 @@ export default function HomePage({ session }: { session: SessionType }) {
 					</m.p>
 				)}
 				<div className="flex flex-row justify-center ">
-					<Stopwatch
+					{/* <Stopwatch
+						isDriving={isDriving}
+						setTimeDriving={setTimeDriving}
+						setShowStopDriveModal={setShowStopDriveModal}
+					/> */}
+
+					<Stopwatch1
 						isDriving={isDriving}
 						setTimeDriving={setTimeDriving}
 						setShowStopDriveModal={setShowStopDriveModal}
