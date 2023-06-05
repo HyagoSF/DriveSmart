@@ -19,7 +19,7 @@ export default function SimpleStatisticsReport({
 	totalKms: number;
 	liquidHourlyRate: number;
 }) {
-	const [showStatistics, setShowStatistics] = useState(false);
+	const [showStatistics, setShowStatistics] = useState(true);
 
 	const statisticsArray = [
 		{

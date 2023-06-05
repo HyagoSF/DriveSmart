@@ -131,6 +131,7 @@ export default function DeliveryList() {
 					<SimpleStatisticsReport
 						// key={deliveryDay.id}
 						// dateFormatted={'123'}
+						name={'STATISTICS'}
 						dateFormatted={formattedDate}
 						liquidEarnings={liquidEarnings}
 						totalHours={totalHoursFormatted}
