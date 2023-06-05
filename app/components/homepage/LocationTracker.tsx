@@ -107,13 +107,23 @@ export default function LocationTracker({
 
 	const startTracking = () => {
 		if (!isTracking) {
-			// console.log('Starting tracking...');
+			console.log('Starting tracking...');
 
 			// reset the locations and totalKms when starting a new tracking session
 			setLocations([]);
 			setTotalKms(0);
 
-			// Track the user's location every 10 seconds
+			// Get the user's current location when the user startTracking
+			if (locations.length === 0) {
+				navigator.geolocation.getCurrentPosition((position) => {
+					// console.log('Getting current position...');
+					// console.log(position.coords);
+					const { latitude, longitude } = position.coords;
+					const newLocation = { lat: +latitude, lng: +longitude };
+					setStartLocation(newLocation);
+				});
+			}
+
 			const id = setInterval(() => {
 				navigator.geolocation.getCurrentPosition((position) => {
 					const { latitude, longitude } = position.coords;
@@ -121,17 +131,13 @@ export default function LocationTracker({
 					// console.log(locations);
 					// console.log(locations.length);
 
-					if (locations.length === 0) {
-						setStartLocation(newLocation);
-					}
-
 					setLocations((prevLocations) => [
 						...prevLocations,
 						newLocation,
 					]);
 				});
 
-				console.log('Tracking...');
+				// console.log('Tracking...');
 
 				// TODO: send request every 5 minutes, 10 seconds is just for testing
 			}, 5 * 60 * 1000); // 5 minutes
