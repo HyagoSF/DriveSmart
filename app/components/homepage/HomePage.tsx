@@ -31,6 +31,8 @@ export default function HomePage({ session }: { session: SessionType }) {
 	// create state to get track of the sending data
 	const [sendingData, setSendingData] = useState(false);
 
+	const [carIconLocation, setCarIconLocation] = useState(0);
+
 	// VARIABLES
 	const [gasPrice, setGasPrice] = useState<number | null>(null);
 	const [grossEarnings, setGrossEarnings] = useState<number | null>(null);
@@ -55,16 +57,32 @@ export default function HomePage({ session }: { session: SessionType }) {
 	const queryClient = useQueryClient();
 
 	// HANDLING THE CAR DRAG
-	const handleDragEnd = (event: any, info: { offset: { x: number } }) => {
+	const handleDragEnd = async (
+		event: any,
+		info: { offset: { x: number } }
+	) => {
 		if (info.offset.x > 157.5) {
 			// if the user swipe the car at least at the middle of the screen, the car will start to drive
-			setShowStartDriveModal(true);
+			// setCarIconLocation(315);
+			// set an interval of 0.5 seconds to update the car location
+
 			handleX.set(315);
+			// setCarIconLocation((prev) => prev + 1);
+			setShowStartDriveModal(true);
+
+			// handleX.set(carIconLocation);
+			// console.log(carIconLocation);
 		} else {
 			// otherwise, the car will go back to the start position
-			setIsDriving(false);
+			setCarIconLocation(0);
 			handleX.set(0);
+
+			handleX.set(0);
+			// setCarIconLocation((prev) => prev + 1);
+
+			setIsDriving(false);
 		}
+		// // clear the interval
 	};
 
 	// SUBMIT HANDLER
@@ -163,6 +181,29 @@ export default function HomePage({ session }: { session: SessionType }) {
 		<main>
 			{/* Content */}
 
+			{/* MODALS */}
+			{showStartDriveModal && (
+				<PopUpFuelPrice
+					setShowStartDriveModal={setShowStartDriveModal}
+					setIsDriving={setIsDriving}
+					gasPrice={gasPrice}
+					setGasPrice={setGasPrice}
+					// setCarIconLocation={setCarIconLocation}
+					handleX={handleX}
+				/>
+			)}
+
+			{showStopDriveModal && (
+				<PopUpEarnings
+					grossEarnings={grossEarnings}
+					fuelConsumption={fuelConsumption}
+					setShowStopDriveModal={setShowStopDriveModal}
+					setGrossEarnings={setGrossEarnings}
+					setSendingData={setSendingData}
+					setFuelConsumption={setFuelConsumption}
+				/>
+			)}
+
 			<Toaster position="top-center" reverseOrder={false} />
 
 			<h1 className="font-bold text-xl text-center mt-6">LET'S RIDE</h1>
@@ -175,9 +216,8 @@ export default function HomePage({ session }: { session: SessionType }) {
 				<div className=" w-full">
 					{/* THIS IS WHAT I'M CHANGING */}
 					<div className="flex flex-row items-center justify-center p-2">
-						{/* <div className=""> */}
 						<m.div
-							className={`absolute left-6 rounded-full ${
+							className={`absolute left-6 rounded-full z-10 ${
 								isDriving ? 'bg-green-500' : 'bg-white'
 							}`}
 							drag="x"
@@ -189,7 +229,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 								bounceStiffness: 800,
 							}}
 							onDragEnd={handleDragEnd}
-							style={{ x: handleX }}>
+							style={{ x: handleX, touchAction: 'none' }}>
 							<Car color="black" size={36} />
 						</m.div>
 
@@ -204,27 +244,6 @@ export default function HomePage({ session }: { session: SessionType }) {
 					</div>
 				</div>
 			</div>
-
-			{/* MODALS */}
-			{showStartDriveModal && (
-				<PopUpFuelPrice
-					setShowStartDriveModal={setShowStartDriveModal}
-					setIsDriving={setIsDriving}
-					gasPrice={gasPrice}
-					setGasPrice={setGasPrice}
-				/>
-			)}
-
-			{showStopDriveModal && (
-				<PopUpEarnings
-					grossEarnings={grossEarnings}
-					fuelConsumption={fuelConsumption}
-					setShowStopDriveModal={setShowStopDriveModal}
-					setGrossEarnings={setGrossEarnings}
-					setSendingData={setSendingData}
-					setFuelConsumption={setFuelConsumption}
-				/>
-			)}
 
 			{/* STOPWATCH AND LOCATION TRACKER */}
 			<div className=" bg-white mx-4 rounded">

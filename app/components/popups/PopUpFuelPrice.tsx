@@ -7,9 +7,9 @@ import { useState } from 'react';
 export default function PopUpFuelPrice({
 	setShowStartDriveModal,
 	setIsDriving,
-
 	gasPrice,
 	setGasPrice,
+	handleX,
 }: // showModal,
 // onRealDelete,
 // postId,
@@ -19,19 +19,22 @@ export default function PopUpFuelPrice({
 	setIsDriving: Function;
 	gasPrice: number | null;
 	setGasPrice: Function;
+	handleX: any;
 
 	// showModal: Function;
 	// onRealDelete: Function;
 	// postId: string;
 }) {
 	const initial = {
-		y: '-100%',
+		// y: '-100%',
+		opacity: 0,
+		scale: 0.5,
 	};
 
 	const animate = {
-		// opacity: 1,
-		// scale: 1,
-		y: '0',
+		opacity: 1,
+		scale: 1,
+		// y: '0',
 	};
 
 	const handleGasPriceChange = (event: any) => {
@@ -50,26 +53,25 @@ export default function PopUpFuelPrice({
 		// onRealDelete(postId);
 	};
 
-	const startDrivingHandler = () => {
+	const closePopupHandler = () => {
 		setShowStartDriveModal(false);
+		handleX.set(0);
 	};
 
 	return (
 		<m.div
 			initial={initial}
 			animate={animate}
-			transition={{ duration: 0.5 }}
-			className=" fixed w-full h-full z-20 bg-black-300/20 left-0 ">
+			transition={{ duration: 0.2 }}
+			className=" fixed w-full h-full z-30 backdrop-blur-md left-0 -mt-24 pt-44 rounded-sm">
 			{/* basically centering the modal */}
-			<div className="bg-white m-2 flex flex-col items-center gap-2">
-				<div className="bg-black flex justify-between items-center w-full text-sm px-2 py-1">
+			<div className="bg-white m-2 flex flex-col items-center gap-2 rounded-lg">
+				<div className="bg-black flex justify-between items-center w-full text-sm px-2 py-1 rounded-t-lg">
 					<div className="flex items-center ">
 						<AlertTriangle size={32} className="text-white" />
 						<h2 className="text-white">FUEL INFORMATION</h2>
 					</div>
-					<button
-						className="text-white "
-						onClick={startDrivingHandler}>
+					<button className="text-white " onClick={closePopupHandler}>
 						X
 					</button>
 				</div>

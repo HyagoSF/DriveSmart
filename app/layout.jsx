@@ -11,7 +11,6 @@ import { authOptions } from '../pages/api/auth/[...nextauth]';
 import NavBarLogged from './auth/NavBarLogged';
 import { useRouter } from 'next/navigation';
 
-
 // Adding the font to the page
 const openSans = Open_Sans({
 	weight: '400',
@@ -30,13 +29,6 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
 	const session = await getServerSession(authOptions);
-	// const router = useRouter();
-
-	// useEffect(() => {
-	// 	if (getPath !== '/' && !session?.user) {
-	// 		router.push('/');
-	// 	}
-	// });
 
 	return (
 		<html lang="en">
@@ -51,7 +43,6 @@ export default async function RootLayout({ children }) {
 
 					{session?.user && <Footer />}
 				</QueryWrapper>
-				
 			</body>
 
 			{/* <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpMEKoIbnf0FIGlcl9-mM8WyNeCfJB7Js&libraries=places"></script> */}

@@ -15,7 +15,7 @@ export default function Stopwatch1({
 }) {
 	const [startTime, setStartTime] = useState<number | null>(null);
 	const [elapsedTime, setElapsedTime] = useState<number>(0);
-	const [isRunning, setIsRunning] = useState<boolean>(false);
+	// const [isRunning, setIsRunning] = useState<boolean>(false);
 
 	useEffect(() => {
 		let timerId: NodeJS.Timeout;
