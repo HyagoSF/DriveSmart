@@ -21,6 +21,54 @@ export default function SimpleStatisticsReport({
 }) {
 	const [showStatistics, setShowStatistics] = useState(false);
 
+	const statisticsArray = [
+		{
+			name: 'DATE',
+			value: dateFormatted,
+			color: 'bg-gray-400',
+		},
+		{
+			name: 'EARNS',
+			value: `$${liquidEarnings}`,
+			color: 'bg-green-600',
+		},
+		{
+			name: 'TIME',
+			value: totalHours,
+			color: 'bg-yellow-600',
+		},
+		{
+			name: 'DRIVEN',
+			value: `${totalKms} km`,
+			color: 'bg-red-700',
+		},
+		{
+			name: 'HOURLY',
+			value: `$${liquidHourlyRate}`,
+			color: 'bg-green-600',
+		},
+	];
+
+	const container = {
+		hidden: { opacity: 1, scale: 0 },
+		visible: {
+			opacity: 1,
+			scale: 1,
+			transition: {
+				delayChildren: 0.2,
+				staggerChildren: 0.1,
+			},
+		},
+	};
+
+	const item = {
+		hidden: { y: 20, opacity: 0 },
+		visible: {
+			y: 0,
+			opacity: 1,
+		},
+	};
+
 	return (
 		<>
 			<div className="bg-white rounded px-4 py-2 m-4 mt-4">
@@ -49,38 +97,21 @@ export default function SimpleStatisticsReport({
 
 				{showStatistics && (
 					<m.div
-						className=" grid grid-cols-5 gap-1"
-						initial={{
-							y: '-25%',
-						}}
-						animate={{
-							y: '0',
-						}}
-						transition={{ duration: 0.5 }}>
-						<div className="flex flex-col justify-around bg-gray-400 items-center rounded text-gray-100 font-bold p-1 ">
-							<h1 className="text-xs">DATE</h1>
-							<h1>{dateFormatted}</h1>
-						</div>
-
-						<div className="flex flex-col justify-around bg-green-600 items-center rounded text-gray-100 font-bold p-1 ">
-							<h1 className="text-xs">EARNS</h1>
-							<h1>${liquidEarnings}</h1>
-						</div>
-
-						<div className="flex flex-col justify-around bg-yellow-600 items-center rounded text-gray-100 font-bold p-1 ">
-							<h1 className="text-xs">TIME</h1>
-							<h1>{totalHours}</h1>
-						</div>
-
-						<div className="flex flex-col justify-around bg-red-700 items-center rounded text-gray-100 font-bold p-1 ">
-							<h1 className="text-xs">DRIVEN</h1>
-							<h1>{totalKms} km</h1>
-						</div>
-
-						<div className="flex flex-col justify-around bg-green-600 items-center rounded text-gray-100 font-bold p-1 ">
-							<h1 className="text-xs">HOURLY</h1>
-							<h1>${liquidHourlyRate}</h1>
-						</div>
+						className="container grid grid-cols-5 gap-1"
+						initial="hidden"
+						animate="visible"
+						variants={container}
+						// transition={{ duration: 0.5 }}
+					>
+						{statisticsArray.map((statistic) => (
+							<m.div
+								className={`item flex flex-col justify-around items-center rounded text-gray-100 font-bold p-1 ${statistic.color}`}
+								key={statistic.name}
+								variants={item}>
+								<h1 className="text-xs">{statistic.name}</h1>
+								<h1>{statistic.value}</h1>
+							</m.div>
+						))}
 					</m.div>
 				)}
 			</div>
