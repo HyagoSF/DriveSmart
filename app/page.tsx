@@ -12,7 +12,7 @@ export default async function Home() {
 	// console.log(session);
 
 	return (
-		<main className="min-h-screen">
+		<main>
 			{/* If the user is not Logged */}
 			{!session?.user && <Login />}
 

@@ -178,7 +178,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 	}
 
 	return (
-		<main>
+		<main className="min-h-screen">
 			{/* Content */}
 
 			{/* MODALS */}
