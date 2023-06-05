@@ -256,7 +256,7 @@ export default function LocationTracker({
 					height: '400px',
 				}}></div>
 			{/* )} */}
-			{isDriving && (
+			{/* {isDriving && (
 				<m.div
 					className="bg-white rounded p-4"
 					initial={{
@@ -272,7 +272,7 @@ export default function LocationTracker({
 						</span>
 					</h1>
 				</m.div>
-			)}
+			)} */}
 		</>
 	);
 }
