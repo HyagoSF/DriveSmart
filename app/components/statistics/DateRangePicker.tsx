@@ -1,3 +1,6 @@
+import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
+import './variables.scss';
+
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -37,16 +40,24 @@ export default function CustomDateRangePicker({
 				onChange={(date) => handleDateRangeChange(date[0], date[1])}
 				selectsRange
 				inline
-				className="border border-gray-300 rounded-md p-2"
-				calendarClassName="bg-white shadow-md rounded-md custom-calendar"
-				dayClassName={dayClassNames}
+				// block
+				// calendarClassName=" rounded-md custom-calendar rounded-md p-1 "
+				// dayClassName={dayClassNames}
+				// monthClassName={(date: Date) => 'text-gray-700'}
+				weekDayClassName={(date: Date) => 'text-red'}
+				// dayClassName={() => 'text-black '}
 				todayButton="Today"
 				dateFormat="yyyy/dd/MM"
 			/>
 
+			{/* dayClassName?(date: Date): string | null;
+				weekDayClassName?(date: Date): string | null;
+				monthClassName?(date: Date): string | null;
+				timeClassName?(date: Date): string | null; 
+			*/}
+
 			{startDate && endDate && (
 				<div className="flex flex-col justify-center w-full items-center mt-2 p">
-					<p className="text-gray-700">Deliveries from</p>
 					<span className="text-gray-700 font-bold">
 						{startDate?.toString().slice(0, 10)}
 					</span>

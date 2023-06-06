@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import DateRangePicker from './DateRangePicker';
-import SimpleStatisticsReport from './homepage/SimpleStatisticsReport';
-import { StatisticsType } from '../types/StatisticsType';
+import SimpleStatisticsReport from '../homepage/SimpleStatisticsReport';
 
 // all work expenses
 const allDelivery = async () => {
@@ -54,22 +53,23 @@ export default function DeliveryList() {
 	if (selectedDateRange !== null) {
 		if (selectedDateRange.startDate && selectedDateRange.endDate) {
 			filteredDeliveryDays = data?.filter((deliveryDay: any) => {
-				if (!selectedDateRange) {
-					return true;
-				}
 				const deliveryDayDate = new Date(deliveryDay.date);
+
+				// I had to add one day here because the date range picker was not including the last day
+				const lastDatePlusOne = new Date(selectedDateRange.endDate);
+				lastDatePlusOne.setDate(lastDatePlusOne.getDate() + 1);
+
 				return (
 					deliveryDayDate >= selectedDateRange.startDate &&
-					deliveryDayDate <= selectedDateRange.endDate
+					deliveryDayDate <= lastDatePlusOne
 				);
 			});
 
-			const firstDaySelected = selectedDateRange?.startDate?.getDate();
-			const lastDaySelected = selectedDateRange?.endDate?.getDate();
+			const firstDaySelected = selectedDateRange.startDate.getDate();
+			const lastDaySelected = selectedDateRange.endDate.getDate();
 
-			// first month of the selected date range
-			const firstMonth = selectedDateRange?.startDate?.getMonth();
-			const lastMonth = selectedDateRange?.endDate?.getMonth();
+			const firstMonth = selectedDateRange.startDate.getMonth();
+			const lastMonth = selectedDateRange.endDate.getMonth();
 
 			if (firstMonth === lastMonth) {
 				const monthName = monthNames[firstMonth];
@@ -111,12 +111,12 @@ export default function DeliveryList() {
 			<h1
 				onClick={handleShowList}
 				className="flex justify-center w-full rounded-md mt-4 text-3xl px-8 py-2">
-				Delivery List
+				STATISTICS
 			</h1>
 
 			<DateRangePicker onChange={handleDateRangeChange} />
 
-			{isLoading && <p>Loading...</p>}
+			{isLoading && <p className="text-center">Loading...</p>}
 			{/* {error && <p>Error: {error}</p>} */}
 
 			{!selectedDateRange && !isLoading && (

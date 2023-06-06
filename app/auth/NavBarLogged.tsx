@@ -17,7 +17,7 @@ export default function NavBarLogged({ session }: { session: any }) {
 		<div className="mx-2 sticky top-0 z-20">
 			{showMenu && (
 				<li
-					className=" flex items-center flex-row w-full justify-between h-20 bg-black p-2 rounded-b-lg"
+					className=" flex items-center flex-row w-full justify-between h-20 bg-black/95 p-2 rounded-b-lg"
 					onClick={() => setShowMenu(false)}>
 					<Link href={'/'}>
 						<Image

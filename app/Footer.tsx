@@ -3,7 +3,7 @@ import { Home as HomeIcon, DollarSign } from 'lucide-react';
 
 export default async function Footer() {
 	return (
-		<footer className="flex flex-col items-center justify-center w-full h-20  sticky bottom-0 bg-black">
+		<footer className="flex flex-col items-center justify-center w-full h-20  sticky bottom-0 bg-black/95">
 			<ul className="flex flex-center justify-between w-full ">
 				<Link
 					href="/"
