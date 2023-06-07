@@ -1,39 +1,28 @@
 import Link from 'next/link';
-import {
-	User,
-	BellIcon,
-	Car,
-	ChevronDown,
-	Home as HomeIcon,
-	CalendarSearch,
-	DollarSign,
-	Receipt,
-} from 'lucide-react';
-
+import { Home as HomeIcon, DollarSign } from 'lucide-react';
 
 export default async function Footer() {
-
 	return (
-		<footer className="flex flex-col items-center justify-center w-full h-20 bg-white sticky bottom-0 ">
-			<ul className="flex flex-center justify-between w-full p-4 py-2 ">
+		<footer className="flex flex-col items-center justify-center w-full h-20  sticky bottom-0 bg-black/95">
+			<ul className="flex flex-center justify-between w-full ">
 				<Link
 					href="/"
-					className="flex flex-col items-center justify-center text-center w-full">
+					className="flex flex-col items-center justify-center text-center w-full text-white">
 					<HomeIcon size={32} />
 					Home
 				</Link>
 				<Link
 					href="statistics"
-					className="flex flex-col items-center justify-center text-center w-full">
+					className="flex flex-col items-center justify-center text-center w-full text-white">
 					<DollarSign size={32} />
-					Statistics
+					STATISTICS
 				</Link>
-				<Link
+				{/* <Link
 					href="expense"
 					className="flex flex-col items-center justify-center text-center w-full">
 					<Receipt size={32} />
 					Work
-				</Link>
+				</Link> */}
 				{/* <Link
 					href="carExpense"
 					className="flex flex-col items-center justify-center text-center w-12">

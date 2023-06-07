@@ -29,7 +29,7 @@ export default function SimpleStatisticsReport({
 		},
 		{
 			name: 'EARNS',
-			value: `$${liquidEarnings}`,
+			value: `$${liquidEarnings?.toFixed(2)}`,
 			color: 'bg-green-600',
 		},
 		{
@@ -39,12 +39,12 @@ export default function SimpleStatisticsReport({
 		},
 		{
 			name: 'DRIVEN',
-			value: `${totalKms} km`,
+			value: `${totalKms?.toFixed(0)} km`,
 			color: 'bg-red-700',
 		},
 		{
 			name: 'HOURLY',
-			value: `$${liquidHourlyRate}`,
+			value: `$${liquidHourlyRate ? liquidHourlyRate.toFixed(2) : 0}`,
 			color: 'bg-green-600',
 		},
 	];
@@ -105,7 +105,7 @@ export default function SimpleStatisticsReport({
 					>
 						{statisticsArray.map((statistic) => (
 							<m.div
-								className={`item flex flex-col justify-around items-center rounded text-gray-100 font-bold p-1 ${statistic.color}`}
+								className={`item flex flex-col justify-between items-center rounded text-gray-100 font-bold p-1 ${statistic.color}`}
 								key={statistic.name}
 								variants={item}>
 								<h1 className="text-xs">{statistic.name}</h1>
