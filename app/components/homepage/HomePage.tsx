@@ -293,7 +293,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 			<LastWorkDay />
 
-			<ChartCard/>
+			{/* <ChartCard/> */}
 
 			{/* <CurrentWeek /> */}
 		</main>
