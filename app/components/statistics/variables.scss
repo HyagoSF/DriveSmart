@@ -2,7 +2,7 @@
     background-color: white;
     color: black;
     font-size: 1rem;
-    // font-family: 'Mulish';
+    border-radius: 0.5rem 0.5rem 0 0;
   
     .react-datepicker__month {
       padding: 1rem 0;
@@ -38,6 +38,7 @@
     }
 
     .react-datepicker__header {
+        background-color: rgb(168, 168, 168);
 
         .react-datepicker__current-month{
             font-size: 1.5rem;
@@ -45,15 +46,19 @@
             // padding: 0;
         }
     }
+    }
+
+    .react-datepicker__today-button{
+      background-color: rgb(168, 168, 168);
+
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border-radius: 0 0 0.5rem 0.5rem;
+      &:hover {
+          background-color: rgb(168, 168, 168);
+        }
     
 
   }
-
-//    react-datepicker__day--in-range
-
-//  react-datepicker__day--023 react-datepicker__day--keyboard-selected react-datepicker__day--range-end
-
-
-// react-datepicker__day react-datepicker__day--014 react-datepicker__day--in-range
-
-//  react-datepicker__day--keyboard-selected react-datepicker__day--range-end 

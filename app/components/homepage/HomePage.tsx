@@ -24,6 +24,7 @@ import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CurrentWeek from './currentweek/CurrentWeek';
 import Stopwatch1 from './Stopwatch1';
+import { ChartCard } from './Chart/ChartCard';
 
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES
@@ -213,9 +214,9 @@ export default function HomePage({ session }: { session: SessionType }) {
 				className={`${
 					isDriving ? 'bg-green-500' : 'bg-white'
 				} items-center mx-4 mt-2 rounded`}>
-				<div className=" w-full">
+				<div className="w-full">
 					{/* THIS IS WHAT I'M CHANGING */}
-					<div className="flex flex-row items-center justify-center p-2">
+					<div className="flex flex-row items-center justify-center p-2 h-20	">
 						<m.div
 							className={`absolute left-6 rounded-full z-10 ${
 								isDriving ? 'bg-green-500' : 'bg-white'
@@ -230,7 +231,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 							}}
 							onDragEnd={handleDragEnd}
 							style={{ x: handleX, touchAction: 'none' }}>
-							<Car color="black" size={36} />
+							<Car color="black" size={80} />
 						</m.div>
 
 						{!isDriving && (
@@ -291,6 +292,8 @@ export default function HomePage({ session }: { session: SessionType }) {
 			</h1>
 
 			<LastWorkDay />
+
+			<ChartCard/>
 
 			{/* <CurrentWeek /> */}
 		</main>

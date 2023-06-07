@@ -44,7 +44,7 @@ export default function CustomDateRangePicker({
 				// calendarClassName=" rounded-md custom-calendar rounded-md p-1 "
 				// dayClassName={dayClassNames}
 				// monthClassName={(date: Date) => 'text-gray-700'}
-				weekDayClassName={(date: Date) => 'text-red'}
+				// weekDayClassName={(date: Date) => 'text-red'}
 				// dayClassName={() => 'text-black '}
 				todayButton="Today"
 				dateFormat="yyyy/dd/MM"
@@ -55,6 +55,7 @@ export default function CustomDateRangePicker({
 				monthClassName?(date: Date): string | null;
 				timeClassName?(date: Date): string | null; 
 			*/}
+
 
 			{startDate && endDate && (
 				<div className="flex flex-col justify-center w-full items-center mt-2 p">
