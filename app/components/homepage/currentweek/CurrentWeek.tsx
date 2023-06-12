@@ -2,27 +2,24 @@
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { motion as m } from 'framer-motion';
-import { useEffect, useState } from 'react';
 import SimpleStatisticsReport from '../SimpleStatisticsReport';
 
-const currentWeek = async () => {
-	const { data } = await axios.get('/api/delivery/CurrentWeek');
-	// console.log(data);
+const fetchCurrentWeek = async () => {
+	const { data } = await axios.get('/api/delivery/getCurrentWeek');
 	return data;
 };
 
 export default function CurrentWeek({}: {}) {
 	const { data, error, isLoading } = useQuery({
-		queryKey: ['delivery'],
-		queryFn: currentWeek,
+		queryKey: ['currentWeek'],
+		queryFn: fetchCurrentWeek,
 	});
 
-	const dateFormatted = data?.date;
-	const liquidEarnings = data?.liquidEarnings;
+	const dateFormatted = `${data?.startDate} ${data?.endDate}`;
+	const liquidEarnings = data?.totalLiquidEarnings;
 	const totalHours = data?.totalHours;
-	const totalKms = data?.totalKms;
-	const liquidHourlyRate = data?.liquidHourlyRate;
+	const totalKms = data?.totalKmsDriven;
+	const liquidHourlyRate = data?.totalLiquidHourlyRate;
 
 	return (
 		<>

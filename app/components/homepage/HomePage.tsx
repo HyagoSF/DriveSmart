@@ -10,7 +10,6 @@ import PopUpFuelPrice from '../popups/PopUpFuelPrice';
 import PopUpEarnings from '../popups/PopUpEarnings';
 import LocationTracker from './LocationTracker';
 import LastWorkDay from './lastworkday/LastWorkDay';
-import Stopwatch from './stopwatch';
 
 // IMPORTING TYPES
 import { SessionType } from '../../types/SessionType';
@@ -26,13 +25,15 @@ import CurrentWeek from './currentweek/CurrentWeek';
 import Stopwatch1 from './Stopwatch1';
 import { ChartCard } from './Chart/ChartCard';
 
+import dayjs from 'dayjs';
+
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES
 	const [isDriving, setIsDriving] = useState(false);
 	// create state to get track of the sending data
 	const [sendingData, setSendingData] = useState(false);
 
-	const [carIconLocation, setCarIconLocation] = useState(0);
+	// const [carIconLocation, setCarIconLocation] = useState(0);
 
 	// VARIABLES
 	const [gasPrice, setGasPrice] = useState<number | null>(null);
@@ -75,10 +76,10 @@ export default function HomePage({ session }: { session: SessionType }) {
 			// console.log(carIconLocation);
 		} else {
 			// otherwise, the car will go back to the start position
-			setCarIconLocation(0);
+			// setCarIconLocation(0);
 			handleX.set(0);
 
-			handleX.set(0);
+			// handleX.set(0);
 			// setCarIconLocation((prev) => prev + 1);
 
 			setIsDriving(false);
@@ -148,7 +149,9 @@ export default function HomePage({ session }: { session: SessionType }) {
 			onSuccess: (data) => {
 				// console.log(data);
 				// const successMessage = data.data.message;
-				queryClient.invalidateQueries({ queryKey: ['delivery'] });
+				queryClient.invalidateQueries({
+					queryKey: ['delivery', 'currentWeek', 'lastWorkDay'],
+				});
 
 				// notify(successMessage, 'success');
 				notify('Success', 'success');
@@ -293,9 +296,9 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 			<LastWorkDay />
 
-			{/* <ChartCard/> */}
+			<CurrentWeek />
 
-			{/* <CurrentWeek /> */}
+			<ChartCard />
 		</main>
 	);
 }

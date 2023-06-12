@@ -14,7 +14,7 @@ const lastWorkDay = async () => {
 
 export default function LastWorkDay({}: {}) {
 	const { data, error, isLoading } = useQuery({
-		queryKey: ['delivery'],
+		queryKey: ['lastWorkDay'],
 		queryFn: lastWorkDay,
 	});
 

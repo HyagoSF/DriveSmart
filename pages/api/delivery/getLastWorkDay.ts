@@ -30,6 +30,8 @@ export default async function handler(
 				},
 			});
 
+			// console.log('Im here, in getLastWorkDay.ts')
+
 			// Formatting date
 			const monthNames = [
 				'January',
@@ -46,18 +48,16 @@ export default async function handler(
 				'December',
 			];
 			const monthIndex = data.date.getMonth();
-			const monthName = monthNames[monthIndex].toUpperCase();
+			const monthName = monthNames[monthIndex];
 			const dayOfMonth = data.date.getDate();
 			const formattedDate = `${monthName} ${dayOfMonth}`;
-			data.date = formattedDate;
-
+			data.date = formattedDate; 	
+ 
 			// formatting time
-
 			const hours = Math.floor(data.totalHours);
 			const minutes = Math.round((data.totalHours - hours) * 60);
 			data.totalHours = `${hours}h ${minutes}m`;
 
-			// console.log(data.date);
 
 			return res.status(200).json(data);
 
