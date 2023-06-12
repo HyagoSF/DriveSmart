@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { motion as m } from 'framer-motion';
+import { Chart } from 'chart.js';
+import { ChartCard } from './Chart/ChartCard';
 
 export default function SimpleStatisticsReport({
 	name,
@@ -11,6 +13,7 @@ export default function SimpleStatisticsReport({
 	totalHours,
 	totalKms,
 	liquidHourlyRate,
+	showChart,
 }: {
 	name?: string;
 	dateFormatted: string;
@@ -18,6 +21,7 @@ export default function SimpleStatisticsReport({
 	totalHours: string;
 	totalKms: number;
 	liquidHourlyRate: number;
+	showChart?: boolean;
 }) {
 	const [showStatistics, setShowStatistics] = useState(true);
 
@@ -71,7 +75,7 @@ export default function SimpleStatisticsReport({
 
 	return (
 		<>
-			<div className="bg-white rounded px-4 py-2 m-4 mt-4">
+			<div className="bg-white rounded px-4 py-2 m-4 mt-12">
 				<div className="flex justify-between items-center">
 					<h1 className="font-bold py-2">{name ? `${name}:` : ''}</h1>
 					{showStatistics ? (
@@ -113,6 +117,10 @@ export default function SimpleStatisticsReport({
 							</m.div>
 						))}
 					</m.div>
+				)}
+
+				{showChart && showStatistics && (
+					<ChartCard />
 				)}
 			</div>
 		</>

@@ -29,7 +29,7 @@ export default function Delivery() {
 		<div className=" min-h-screen">
 			<DeliveryList />
 
-			{/* <DeliveryForm /> */}
+			<DeliveryForm />
 		</div>
 	);
 }

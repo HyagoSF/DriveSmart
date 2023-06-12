@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -30,6 +30,7 @@ export default function CurrentWeek({}: {}) {
 				totalHours={totalHours}
 				totalKms={totalKms}
 				liquidHourlyRate={liquidHourlyRate}
+				showChart={true}
 			/>
 		</>
 	);

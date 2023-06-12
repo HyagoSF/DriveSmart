@@ -23,7 +23,6 @@ import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import CurrentWeek from './currentweek/CurrentWeek';
 import Stopwatch1 from './Stopwatch1';
-import { ChartCard } from './Chart/ChartCard';
 
 import dayjs from 'dayjs';
 
@@ -290,15 +289,13 @@ export default function HomePage({ session }: { session: SessionType }) {
 				<h1 className="text-2xl">This week small summary</h1>
 			</div> */}
 
-			<h1 className="font-bold text-center mt-24">
+			<h1 className="font-bold text-center mt-12">
 				YOUR PREVIOUS TRACKS:
 			</h1>
 
 			<LastWorkDay />
 
 			<CurrentWeek />
-
-			<ChartCard />
 		</main>
 	);
 }
