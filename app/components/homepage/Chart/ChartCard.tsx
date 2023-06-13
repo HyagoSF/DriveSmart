@@ -116,7 +116,7 @@ export function ChartCard({}: {}) {
 		{ value: 'liquidEarnings', label: 'Liquid Earnings' },
 		{ value: 'totalKms', label: 'Total Kilometers' },
 		{ value: 'totalHours', label: 'Time Driven' },
-		{ value: 'gasSpent', label: 'Fuel Consumption' },
+		// { value: 'gasSpent', label: 'Fuel Consumption' },
 		{ value: 'liquidHourlyRate', label: 'Liquid Hourly' },
 	];
 

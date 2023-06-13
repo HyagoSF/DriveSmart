@@ -51,13 +51,12 @@ export default async function handler(
 			const monthName = monthNames[monthIndex];
 			const dayOfMonth = data.date.getDate();
 			const formattedDate = `${monthName} ${dayOfMonth}`;
-			data.date = formattedDate; 	
- 
+			data.date = formattedDate;
+
 			// formatting time
 			const hours = Math.floor(data.totalHours);
 			const minutes = Math.round((data.totalHours - hours) * 60);
 			data.totalHours = `${hours}h ${minutes}m`;
-
 
 			return res.status(200).json(data);
 
