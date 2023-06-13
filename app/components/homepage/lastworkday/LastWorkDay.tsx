@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -14,7 +14,7 @@ const lastWorkDay = async () => {
 
 export default function LastWorkDay({}: {}) {
 	const { data, error, isLoading } = useQuery({
-		queryKey: ['delivery'],
+		queryKey: ['lastWorkDay'],
 		queryFn: lastWorkDay,
 	});
 

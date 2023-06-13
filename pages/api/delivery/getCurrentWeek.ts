@@ -4,6 +4,24 @@ import { getServerSession } from 'next-auth';
 import prisma from '../../../prisma/client';
 import { authOptions } from '../auth/[...nextauth].js';
 
+import dayjs from 'dayjs';
+import { format } from 'path';
+
+interface WorkDay {
+	id: string;
+	userId: string;
+	date: string;
+	totalHours: any;
+	totalKms: number;
+	grossEarnings: number;
+	liquidEarnings: number;
+	gasPrice: string;
+	gasLiters: number;
+	gasSpent: number;
+	grossHourlyRate: number;
+	liquidHourlyRate: number;
+}
+
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
@@ -21,49 +39,76 @@ export default async function handler(
 		});
 
 		try {
-            // get the current week sum of 
+			// get the current week sum of
 
-			const data = await prisma.delivery.findFirst({
+			const data = await prisma.delivery.findMany({
 				where: {
 					userId: user.id,
+					// where the date is between the current week
+					date: {
+						gte: dayjs().startOf('week').toDate(),
+						lte: dayjs().endOf('week').toDate(),
+					},
 				},
 				orderBy: {
 					date: 'desc',
 				},
 			});
 
-			// Formatting date
-			const monthNames = [
-				'January',
-				'February',
-				'March',
-				'April',
-				'May',
-				'June',
-				'July',
-				'August',
-				'September',
-				'October',
-				'November',
-				'December',
-			];
-			const monthIndex = data.date.getMonth();
-			const monthName = monthNames[monthIndex].toUpperCase();
-			const dayOfMonth = data.date.getDate();
-			const formattedDate = `${monthName} ${dayOfMonth}`;
-			data.date = formattedDate;
 
-			// formatting time
+			// get the first day of the week (Monday)
+			const firstDayOfWeek = dayjs().startOf('week').add(1, 'day');
+			// then get the last day of the week (Monday + 7 days = Sunday)
+			const lastDayOfWeek = firstDayOfWeek.add(7, 'day').toDate();
 
-			const hours = Math.floor(data.totalHours);
-			const minutes = Math.round((data.totalHours - hours) * 60);
-			data.totalHours = `${hours}h ${minutes}m`;
+			const weekData: {
+				startDate: string | Date;
+				endDate: string | Date;
+				totalHours: any;
+				totalLiquidEarnings: number;
+				totalKmsDriven: number;
+				totalLiquidHourlyRate: number;
+			} = {
+				startDate: firstDayOfWeek.toDate(),
+				endDate: lastDayOfWeek,
+				totalHours: 0,
+				totalLiquidEarnings: 0,
+				totalKmsDriven: 0,
+				totalLiquidHourlyRate: 0,
+			};
 
-			// console.log(data.date);
+			// Format date
+			// const formattedDate = dayjs(day.date).format('MMMM D');
+			const formattedStartDate = dayjs(weekData.startDate).format(
+				'MMMM D'
+			);
 
-			return res.status(200).json(data);
+			const formattedEndDate = dayjs(weekData.endDate).format('MMMM D');
+			weekData.startDate = formattedStartDate;
+			weekData.endDate = formattedEndDate;
 
-			// return res.status(200).json('Success');
+			data.forEach((day: WorkDay) => {
+				weekData.totalHours += day.totalHours;
+				weekData.totalLiquidEarnings += day.liquidEarnings;
+				weekData.totalKmsDriven += day.totalKms;
+			});
+
+			// Format time
+			const hours = Math.floor(weekData.totalHours);
+			const minutes = Math.round((weekData.totalHours - hours) * 60);
+
+			const averageLiquidHourlyRate =
+				weekData.totalLiquidEarnings / weekData.totalHours;
+
+
+
+			weekData.totalLiquidHourlyRate = averageLiquidHourlyRate;
+			weekData.totalHours = `${hours}h ${minutes}m`;
+
+
+
+
+			return res.status(200).json(weekData);
 		} catch (error) {
 			// console.log(error);
 
