@@ -11,6 +11,7 @@ export default function PopUpEarnings({
 	setGrossEarnings,
 	setSendingData,
 	setFuelConsumption,
+	setTotalKms,
 }: {
 	fuelConsumption: number | null;
 	grossEarnings: number | null;
@@ -18,6 +19,7 @@ export default function PopUpEarnings({
 	setGrossEarnings: Function;
 	setSendingData: Function;
 	setFuelConsumption: Function;
+	setTotalKms: Function;
 }) {
 	const initial = {
 		opacity: 0,
@@ -39,6 +41,12 @@ export default function PopUpEarnings({
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		setFuelConsumption(+event.target.value);
+	};
+
+	const handleTotalKmsChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setTotalKms(+event.target.value);
 	};
 
 	const handleEarnings = () => {
@@ -99,6 +107,21 @@ export default function PopUpEarnings({
 					type="number"
 					step="0.01"
 					placeholder="Fuel Consumption"
+					required
+				/>
+
+				<h1 className=" font-bold text-gray-700 mx-4">
+					TOTAL KILOMETERS {`TEMPORARY`}
+				</h1>
+
+				<input
+					className="appearance-none block  bg-white text-gray-700 border border-gray-200 rounded py-2 px-4  leading-tight focus:outline-none focus:bg-gray-200"
+					id="totalKms"
+					name="totalKms"
+					onChange={handleTotalKmsChange}
+					type="number"
+					step="1"
+					placeholder="Total Kilometers"
 					required
 				/>
 
