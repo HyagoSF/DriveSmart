@@ -34,12 +34,14 @@ export default async function RootLayout({ children }) {
 		<html lang="en">
 			{/* When I use openSans.classname will change all my pages font to opensans, if I use variable, just those who I add the font-open-sans will render */}
 			<body
-				className={`${openSans.className} bg-gray-200 md:mx-48 xl:mx-96 `}>
+				className={`${openSans.className} bg-gray-200 md:mx-48 lg:mx-64 xl:mx-96 2xl:mx-144`}>
 				<QueryWrapper>
 					{/* NavBar here */}
 					{session?.user && <NavBarLogged session={session} />}
 
 					{children}
+
+					{/*  */}
 
 					{session?.user && <Footer />}
 				</QueryWrapper>
