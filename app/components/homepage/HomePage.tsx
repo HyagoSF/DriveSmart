@@ -204,6 +204,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 					setGrossEarnings={setGrossEarnings}
 					setSendingData={setSendingData}
 					setFuelConsumption={setFuelConsumption}
+					setTotalKms={setTotalKms}
 				/>
 			)}
 
@@ -277,11 +278,11 @@ export default function HomePage({ session }: { session: SessionType }) {
 						setShowStopDriveModal={setShowStopDriveModal}
 					/>
 					{/* <LocationTracker1 isDriving={isDriving} /> */}
-					<LocationTracker
+					{/* <LocationTracker
 						isDriving={isDriving}
 						totalKms={totalKms}
 						setTotalKms={setTotalKms}
-					/>
+					/> */}
 				</div>
 			</div>
 
