@@ -1,11 +1,11 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import prisma from '../../../prisma/client';
+import dayjs from 'dayjs';
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-
 	// Get the value object from the request body
 	const { value } = req.body;
 
@@ -89,10 +89,15 @@ export default async function handler(
 			});
 		}
 
+		const utcOffset = dayjs().format('Z');	// '-04:00' for example
+
+		//get the -04 from the utcOffset 
+		const utcOffsetHours = +utcOffset.slice(0, 3); // -4
+
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({
 			data: {
-				date: new Date(), // get the date from today
+				date: dayjs(new Date()).add(utcOffsetHours, 'hour').toDate(), // get the date from today
 				// totalHours: totalHoursInDecimal * 100, // converting to decimal
 				totalHours: totalHoursInDecimal, // converting to decimal
 				totalKms: value.totalKms,
