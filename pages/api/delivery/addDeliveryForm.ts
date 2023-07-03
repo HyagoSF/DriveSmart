@@ -101,7 +101,7 @@ export default async function handler(
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({
 			data: {
-				date: new Date(value.date),
+				date: dayjs(value.date).local().startOf('day').toDate(),
 				totalHours: value.totalHours,
 				totalKms: value.totalKms,
 				grossEarnings: value.grossEarnings,

@@ -5,6 +5,13 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import DateRangePicker from './DateRangePicker';
 import SimpleStatisticsReport from '../homepage/SimpleStatisticsReport';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(isBetween);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 // all work expenses
 const allDelivery = async () => {
@@ -49,22 +56,53 @@ export default function DeliveryList() {
 
 	let filteredDeliveryDays = null;
 
+	// console.log('selectedDateRange', selectedDateRange);
+	console.log(selectedDateRange);
+
 	// first day of the selected date range
 	if (selectedDateRange !== null) {
+		// selectedDateRange.startDate.add(-1, 'hour');
+		// selectedDateRange.endDate.add(-1, 'hour');
+
+		const test = dayjs(selectedDateRange.startDate)
+			.add(1, 'minute')
+			.toDate();
+
+		// console.log(typeof test);
+		// console.log(test);
+
+		// console.log('selectedDateRange.startDate', selectedDateRange.startDate);
+
+		/*
+		{
+			"startDate": "2023-06-30T04:00:00.000Z",
+			"endDate": "2023-07-02T04:00:00.000Z"
+		}
+		*/
+
 		if (selectedDateRange.startDate && selectedDateRange.endDate) {
 			filteredDeliveryDays = data?.filter((deliveryDay: any) => {
-				const deliveryDayDate = new Date(deliveryDay.date);
+				// Convert the delivery day date to a dayjs object
+				const deliveryDayDate = dayjs(deliveryDay.date);
 
-				// I had to add one day here because the date range picker was not including the last day
-				const lastDatePlusOne = new Date(selectedDateRange.endDate);
-				lastDatePlusOne.setDate(lastDatePlusOne.getDate() + 1);
+				// Convert the selected date range to dayjs objects
+				const startDate = dayjs(selectedDateRange.startDate);
+				const endDate = dayjs(selectedDateRange.endDate);
+				// Convert the selected date range to local time
 
-				return (
-					deliveryDayDate >= selectedDateRange.startDate &&
-					deliveryDayDate <= lastDatePlusOne
+				const localStartDate = startDate.local().startOf('day');
+				const localEndDate = endDate.local().endOf('day');
+
+				// Check if the delivery day date is between the selected date range, inclusive
+				return deliveryDayDate.isBetween(
+					localStartDate,
+					localEndDate,
+					'day',
+					'[]'
 				);
 			});
 
+			// this is just for formatting the date answer to the user
 			const firstDaySelected = selectedDateRange.startDate.getDate();
 			const lastDaySelected = selectedDateRange.endDate.getDate();
 
