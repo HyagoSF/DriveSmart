@@ -25,6 +25,7 @@ import CurrentWeek from './currentweek/CurrentWeek';
 import Stopwatch1 from './Stopwatch1';
 
 import dayjs from 'dayjs';
+import DeliveryForm from '../DeliveryForm';
 
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES
@@ -248,6 +249,9 @@ export default function HomePage({ session }: { session: SessionType }) {
 					</div>
 				</div>
 			</div>
+
+			{/* if is not driving show the option to add values manually */}
+			{!isDriving && <DeliveryForm />}
 
 			{/* STOPWATCH AND LOCATION TRACKER */}
 			<div className=" bg-white mx-4 rounded">
