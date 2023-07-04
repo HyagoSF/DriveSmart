@@ -65,7 +65,15 @@ export default function Stopwatch({
 			// Changing the state here will trigger the PopUpEarnings component when I stop driving
 			setShowStopDriveModal(true);
 		}
-	}, [isDriving]);
+	}, [
+		isDriving,
+		prevIsDriving,
+		hours,
+		minutes,
+		seconds,
+		setTimeDriving,
+		setShowStopDriveModal,
+	]);
 
 	// Fetching the time from the server
 	useEffect(() => {

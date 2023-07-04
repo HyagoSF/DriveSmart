@@ -24,9 +24,9 @@ export default function DeliveryForm() {
 	const [minutes, setMinutes] = useState<number>(0);
 
 	const [totalKms, setTotalKms] = useState<number>(0);
-	const [grossEarnings, setGrossEarnings] = useState<Dollars>(0);
+	const [grossEarnings, setGrossEarnings] = useState<any>(0);
 	const [liquidEarnings, setLiquidEarnings] = useState<Dollars>(0);
-	const [gasPrice, setGasPrice] = useState<Dollars>(0);
+	const [gasPrice, setGasPrice] = useState<any>(0);
 
 	const [fuelEfficiency, setFuelEfficiency] = useState<number>(0);
 
@@ -57,7 +57,7 @@ export default function DeliveryForm() {
 			// setGasLiters(null);
 			// setGasSpent(null);
 		}
-	}, [totalKms, grossEarnings, gasPrice]);
+	}, [totalKms, grossEarnings, gasPrice, fuelEfficiency]);
 
 	// useEffect(() => {
 	// 	console.log(grossEarnings);

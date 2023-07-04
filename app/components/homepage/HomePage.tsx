@@ -211,7 +211,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 			<Toaster position="top-center" reverseOrder={false} />
 
-			<h1 className="font-bold text-xl text-center mt-6">LET'S RIDE</h1>
+			<h1 className="font-bold text-xl text-center mt-6">LET&apos;S RIDE</h1>
 
 			{/* Tracking option */}
 			<div
