@@ -14,6 +14,7 @@ export default function SimpleStatisticsReport({
 	totalKms,
 	liquidHourlyRate,
 	showChart,
+	showHideButton,
 }: {
 	name?: string;
 	dateFormatted: string;
@@ -22,6 +23,7 @@ export default function SimpleStatisticsReport({
 	totalKms: number;
 	liquidHourlyRate: number;
 	showChart?: boolean;
+	showHideButton?: boolean;
 }) {
 	const [showStatistics, setShowStatistics] = useState(true);
 
@@ -76,28 +78,32 @@ export default function SimpleStatisticsReport({
 	return (
 		<>
 			<div className="bg-white rounded px-4 py-2 m-4 mt-12">
-				<div className="flex justify-between items-center">
-					<h1 className="font-bold py-2">{name ? `${name}:` : ''}</h1>
-					{showStatistics ? (
-						<m.div
-							className="cursor-pointer mr-2"
-							initial={{ rotate: 0 }}
-							animate={{ rotate: 180 }}
-							transition={{ duration: 1 }}
-							onClick={() => setShowStatistics(false)}>
-							<Eye size={28} />
-						</m.div>
-					) : (
-						<m.div
-							className="cursor-pointer mr-2"
-							initial={{ rotate: 0 }}
-							animate={{ rotate: 180 }}
-							transition={{ duration: 1 }}
-							onClick={() => setShowStatistics(true)}>
-							<EyeOff size={28} />
-						</m.div>
-					)}
-				</div>
+				{showHideButton && (
+					<div className="flex justify-between items-center">
+						<h1 className="font-bold py-2">
+							{name ? `${name}:` : ''}
+						</h1>
+						{showStatistics ? (
+							<m.div
+								className="cursor-pointer mr-2"
+								initial={{ rotate: 0 }}
+								animate={{ rotate: 180 }}
+								transition={{ duration: 1 }}
+								onClick={() => setShowStatistics(false)}>
+								<Eye size={28} />
+							</m.div>
+						) : (
+							<m.div
+								className="cursor-pointer mr-2"
+								initial={{ rotate: 0 }}
+								animate={{ rotate: 180 }}
+								transition={{ duration: 1 }}
+								onClick={() => setShowStatistics(true)}>
+								<EyeOff size={28} />
+							</m.div>
+						)}
+					</div>
+				)}
 
 				{showStatistics && (
 					<m.div
@@ -119,9 +125,7 @@ export default function SimpleStatisticsReport({
 					</m.div>
 				)}
 
-				{showChart && showStatistics && (
-					<ChartCard />
-				)}
+				{showChart && showStatistics && <ChartCard />}
 			</div>
 		</>
 	);

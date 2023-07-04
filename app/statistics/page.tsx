@@ -1,6 +1,6 @@
 // 'use client';
 
-import DeliveryForm from '../components/DeliveryForm';
+
 import DeliveryList from '../components/statistics/DeliveryList';
 
 // IMPORTS FOR TRYING TO MAKE THIS PAGE ONLY ACCESSIBLE TO LOGGED IN USERS

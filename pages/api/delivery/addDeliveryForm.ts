@@ -4,6 +4,8 @@ import { getServerSession } from 'next-auth';
 import prisma from '../../../prisma/client';
 import { authOptions } from '../auth/[...nextauth].js';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -11,26 +13,13 @@ export default async function handler(
 ) {
 	const session = await getServerSession(req, res, authOptions);
 
-	// console.log(session);
-
-	// const { value } = req.body;
-	// console.log(value + ' Is my Value');
+	// to get the local time of the user
+	dayjs.extend(utc);
+	dayjs.extend(timezone);
+	
 	const { value } = req.body;
-	// console.log(value);
 
-	/*
-	I'm getting it:
-	{
-		date: '2023-07-08',	yyyy-mm-dd
-		totalHours: 3,
-		totalKms: 3,
-		grossEarnings: 3,
-		gasPrice: 3,
-		liquidEarnings: 2.31,
-		gasLiters: 0.23,
-		gasSpent: 0.69
-	}
-	*/
+
 
 	// check if the user missed some field in the value object i got
 	for (const key in value) {
