@@ -167,7 +167,7 @@ export default function DeliveryList() {
 						showHideButton={true}
 					/>
 
-					<div className="bg-gray-700 py-4">
+					<div className="bg-gray-500 rounded py-4 m-4 mt-12">
 						<div className="flex justify-center align-center">
 							<button
 								className="text-white text-3xl font-bold "
