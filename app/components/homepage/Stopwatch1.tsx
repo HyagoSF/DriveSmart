@@ -45,7 +45,13 @@ export default function Stopwatch1({
 		}
 
 		return () => clearInterval(timerId);
-	}, [isDriving, startTime]);
+	}, [
+		isDriving,
+		startTime,
+		elapsedTime,
+		setTimeDriving,
+		setShowStopDriveModal,
+	]);
 
 	// function to format time
 	const formatTime = (

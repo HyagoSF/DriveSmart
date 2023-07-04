@@ -114,8 +114,8 @@ export function ChartCard({}: {}) {
 
 	const selectBoxOptions = [
 		{ value: 'liquidEarnings', label: 'Liquid Earnings' },
-		{ value: 'totalKms', label: 'Total Kilometers' },
 		{ value: 'totalHours', label: 'Time Driven' },
+		{ value: 'totalKms', label: 'Kilometers Driven' },
 		// { value: 'gasSpent', label: 'Fuel Consumption' },
 		{ value: 'liquidHourlyRate', label: 'Liquid Hourly' },
 	];

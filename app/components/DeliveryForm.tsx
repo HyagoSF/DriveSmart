@@ -9,15 +9,26 @@ import toast, { Toaster } from 'react-hot-toast';
 import { DollarSign } from 'lucide-react';
 
 import { StatisticsType, Dollars, Liters } from '../types/StatisticsType';
+import dayjs from 'dayjs';
 
 export default function DeliveryForm() {
 	// const [title, setTitle] = useState('');
-	const [date, setDate] = useState('');
-	const [totalHours, setTotalHours] = useState<number>(0);
+	// const [date, setDate] = useState('');
+	const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
+
+	// this hours is the total hours and minutes, hours in decimal
+	// const [totalHours, setTotalHours] = useState<number>(0);
+
+	// set those and then when pass to totalHours, change it to decimal
+	const [hours, setHours] = useState<number>(0);
+	const [minutes, setMinutes] = useState<number>(0);
+
 	const [totalKms, setTotalKms] = useState<number>(0);
-	const [grossEarnings, setGrossEarnings] = useState<Dollars>(0);
+	const [grossEarnings, setGrossEarnings] = useState<any>(0);
 	const [liquidEarnings, setLiquidEarnings] = useState<Dollars>(0);
-	const [gasPrice, setGasPrice] = useState<Dollars>(0);
+	const [gasPrice, setGasPrice] = useState<any>(0);
+
+	const [fuelEfficiency, setFuelEfficiency] = useState<number>(0);
 
 	const [gasLiters, setGasLiters] = useState<Liters>(0);
 	const [gasSpent, setGasSpent] = useState<Dollars>(0);
@@ -33,8 +44,8 @@ export default function DeliveryForm() {
 
 	// EFFECTS
 	useEffect(() => {
-		if (totalKms && grossEarnings && gasPrice) {
-			const gasLiters = totalKms / 13; // Assuming 13 km per liter
+		if (totalKms && grossEarnings && gasPrice && fuelEfficiency) {
+			const gasLiters = totalKms / (100 / fuelEfficiency); // Assuming 13 km per liter
 			const gasSpent = gasLiters * gasPrice;
 			const liquidEarnings = grossEarnings - gasSpent;
 
@@ -46,7 +57,7 @@ export default function DeliveryForm() {
 			// setGasLiters(null);
 			// setGasSpent(null);
 		}
-	}, [totalKms, grossEarnings, gasPrice]);
+	}, [totalKms, grossEarnings, gasPrice, fuelEfficiency]);
 
 	// useEffect(() => {
 	// 	console.log(grossEarnings);
@@ -69,20 +80,31 @@ export default function DeliveryForm() {
 	// HANDLERS
 	const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const date = event.target.value;
+
 		if (date === '') {
 			setDate('');
 		}
 		setDate(date);
 	};
 
-	const handleTotalHoursChange = (
+	const handleHoursChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const hours = Number(event.target.value);
+
+		if (hours === 0) {
+			setHours(0);
+		}
+		setHours(hours);
+	};
+
+	const handleMinutesChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		const totalHours = Number(event.target.value);
-		if (totalHours === 0) {
-			setTotalHours(0);
+		const minutes = Number(event.target.value);
+
+		if (minutes === 0) {
+			setMinutes(0);
 		}
-		setTotalHours(totalHours);
+		setMinutes(minutes);
 	};
 
 	const handleTotalKmsChange = (
@@ -95,13 +117,23 @@ export default function DeliveryForm() {
 		setTotalKms(totalKms);
 	};
 
+	const handleFuelEfficiencyChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const fuelEfficiency = Number(event.target.value);
+		if (fuelEfficiency === 0) {
+			setFuelEfficiency(0);
+		}
+		setFuelEfficiency(fuelEfficiency);
+	};
+
 	const handleGrossEarningsChange = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		const grossEarnings = Number(event.target.value);
 		if (grossEarnings === 0) {
 			// setGrossEarnings(0);
-			setGrossEarnings(null);
+			setGrossEarnings(0);
 		}
 		setGrossEarnings(Number(event.target.value));
 	};
@@ -111,7 +143,7 @@ export default function DeliveryForm() {
 	) => {
 		const gasPrice = Number(event.target.value);
 		if (gasPrice === 0) {
-			setGasPrice(null);
+			setGasPrice(0);
 		}
 		setGasPrice(Number(event.target.value));
 	};
@@ -120,10 +152,19 @@ export default function DeliveryForm() {
 		setShowForm(!showForm);
 	};
 
+	const convertToDecimal = (hours: number, minutes: number) => {
+		const decimalHours = +(hours + minutes / 60).toFixed(2);
+		return decimalHours;
+	};
+
 	// SUBMIT HANDLER
 	const onSubmitFormHandler = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setIsDisabled(true);
+
+		// transform here the hours and minutes to decimal
+		const totalHours = convertToDecimal(hours, minutes);
+
+		// setIsDisabled(true);
 		// notify('Success', 'success');
 		// notify('Loading...', 'loading');
 		// mutate all my states
@@ -175,7 +216,6 @@ export default function DeliveryForm() {
 				setIsDisabled(false);
 			},
 			onSuccess: (data) => {
-				// console.log(data);
 				// const successMessage = data.data.message;
 				queryClient.invalidateQueries({ queryKey: ['delivery'] });
 
@@ -184,7 +224,13 @@ export default function DeliveryForm() {
 
 				// Reset all the states
 				setDate('');
-				setTotalHours(0);
+				// setTotalHours(0);
+
+				setHours(0);
+				setMinutes(0);
+
+				setFuelEfficiency(0);
+
 				setTotalKms(0);
 				setGrossEarnings(0);
 				setLiquidEarnings(0);
@@ -199,15 +245,15 @@ export default function DeliveryForm() {
 	return (
 		<form
 			onSubmit={onSubmitFormHandler}
-			className="bg-white my-4 px-8 py-2 rounded-md">
+			className="bg-white my-4 px-8 py-2 mx-4 rounded-md">
 			{/* Here is for the toaster notification */}
 
 			<Toaster position="top-center" reverseOrder={false} />
 
 			<h1
-				className="text-center text-3xl cursor-pointer"
+				className="text-center text-2xl cursor-pointer"
 				onClick={handleShowForm}>
-				Delivery Form
+				Add Manually
 			</h1>
 
 			{showForm && (
@@ -225,25 +271,40 @@ export default function DeliveryForm() {
 							type="date"
 							value={date}
 							onChange={handleDateChange}
-							placeholder="YYYY-MM-DD"
+							placeholder="MM-DD-YYYY"
 							// required
 						/>
 					</div>
-					<div className="w-full md:w-1/2 px-3">
+					<div className="w-full md:w-1/2 px-3 ">
 						<label
 							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
 							htmlFor="total_hours">
 							Total Hours
 						</label>
-						<input
-							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-							id="total_hours"
-							name="total_hours"
-							value={totalHours === 0 ? '' : totalHours}
-							onChange={handleTotalHoursChange}
-							type="number"
-							placeholder="Enter total hours"
-						/>
+
+						<div className="flex gap-2">
+							<input
+								className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+								id="total_hours"
+								name="total_hours"
+								value={hours === 0 ? '' : hours}
+								onChange={handleHoursChange}
+								type="number"
+								max={12}
+								placeholder="Hours"
+							/>
+
+							<input
+								className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+								id="total_minutes"
+								name="total_minutes"
+								value={minutes === 0 ? '' : minutes}
+								onChange={handleMinutesChange}
+								type="number"
+								max={59}
+								placeholder="Minutes"
+							/>
+						</div>
 					</div>
 					<div className="w-full md:w-1/2 px-3">
 						<label
@@ -261,6 +322,24 @@ export default function DeliveryForm() {
 							placeholder="Enter total kms"
 						/>
 					</div>
+
+					<div className="w-full md:w-1/2 px-3">
+						<label
+							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							htmlFor="total_kms">
+							Fuel Efficiency
+						</label>
+						<input
+							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+							id="total_kms"
+							name="total_kms"
+							value={fuelEfficiency === 0 ? '' : fuelEfficiency}
+							onChange={handleFuelEfficiencyChange}
+							type="number"
+							placeholder="Liters per 100 kms"
+						/>
+					</div>
+
 					<div className="w-full md:w-1/2 px-3 relative">
 						<DollarSign
 							size={16}
@@ -275,7 +354,7 @@ export default function DeliveryForm() {
 							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 pl-8 mb-3 leading-tight focus:outline-none focus:bg-white"
 							id="gross_earnings"
 							name="gross_earnings"
-							value={grossEarnings === null ? '' : grossEarnings}
+							value={grossEarnings === 0 ? '' : grossEarnings}
 							onChange={handleGrossEarningsChange}
 							type="number"
 							placeholder="Enter gross earnings"
@@ -292,7 +371,7 @@ export default function DeliveryForm() {
 							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
 							id="gas_price"
 							name="gas_price"
-							value={gasPrice === null ? '' : gasPrice}
+							value={gasPrice === 0 ? '' : gasPrice}
 							onChange={handleGasPriceChange}
 							type="number"
 							step="0.001"
@@ -334,9 +413,10 @@ export default function DeliveryForm() {
 									Liquid Hourly: &nbsp;
 									<span className="text-green-600 font-bold ">
 										${' '}
-										{(liquidEarnings / totalHours).toFixed(
-											2
-										)}
+										{(
+											liquidEarnings /
+											convertToDecimal(hours, minutes)
+										).toFixed(2)}
 										/h
 									</span>
 								</label>

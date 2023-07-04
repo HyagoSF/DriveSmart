@@ -1,5 +1,5 @@
 export type Dollars = number | null;
-export type Liters = number | null;
+export type Liters = number | null ;
 
 export type TimeDriving = {
 	hours: number;

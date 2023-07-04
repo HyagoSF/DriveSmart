@@ -1,4 +1,4 @@
-import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
+// import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
 import './variables.scss';
 
 import React, { useState } from 'react';

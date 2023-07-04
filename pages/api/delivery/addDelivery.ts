@@ -89,9 +89,9 @@ export default async function handler(
 			});
 		}
 
-		const utcOffset = dayjs().format('Z');	// '-04:00' for example
+		const utcOffset = dayjs().format('Z'); // '-04:00' for example
 
-		//get the -04 from the utcOffset 
+		//get the -04 from the utcOffset
 		const utcOffsetHours = +utcOffset.slice(0, 3); // -4
 
 		// Add the delivery day to the db and connect it to the user

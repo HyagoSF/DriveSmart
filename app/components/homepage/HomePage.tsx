@@ -25,6 +25,7 @@ import CurrentWeek from './currentweek/CurrentWeek';
 import Stopwatch1 from './Stopwatch1';
 
 import dayjs from 'dayjs';
+import DeliveryForm from '../DeliveryForm';
 
 export default function HomePage({ session }: { session: SessionType }) {
 	// STATES
@@ -210,7 +211,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 			<Toaster position="top-center" reverseOrder={false} />
 
-			<h1 className="font-bold text-xl text-center mt-6">LET'S RIDE</h1>
+			<h1 className="font-bold text-xl text-center mt-6">LET&apos;S RIDE</h1>
 
 			{/* Tracking option */}
 			<div
@@ -248,6 +249,9 @@ export default function HomePage({ session }: { session: SessionType }) {
 					</div>
 				</div>
 			</div>
+
+			{/* if is not driving show the option to add values manually */}
+			{!isDriving && <DeliveryForm />}
 
 			{/* STOPWATCH AND LOCATION TRACKER */}
 			<div className=" bg-white mx-4 rounded">

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 
 import prisma from '../../../prisma/client';
 import { authOptions } from '../auth/[...nextauth].js';
+import dayjs from 'dayjs';
 
 export default async function handler(
 	req: NextApiRequest,
@@ -20,7 +21,7 @@ export default async function handler(
 	/*
 	I'm getting it:
 	{
-		date: '2023-04-13',
+		date: '2023-07-08',	yyyy-mm-dd
 		totalHours: 3,
 		totalKms: 3,
 		grossEarnings: 3,
@@ -76,31 +77,31 @@ export default async function handler(
 			value.liquidEarnings / value.totalHours
 		).toFixed(2);
 
-		console.log('addDeliveryForm: ', {
-			data: {
-				date: new Date(value.date),
-				totalHours: value.totalHours,
-				totalKms: value.totalKms,
-				grossEarnings: value.grossEarnings,
-				gasPrice: value.gasPrice,
-				liquidEarnings: value.liquidEarnings,
-				gasLiters: value.gasLiters,
-				gasSpent: value.gasSpent,
-				grossHourlyRate: grossHourlyRate,
-				liquidHourlyRate: liquidHourlyRate,
-				user: {
-					// connect the delivery to the user
-					connect: {
-						id: user.id,
-					},
-				},
-			},
-		});
+		// console.log('addDeliveryForm: ', {
+		// 	data: {
+		// 		date: new Date(dayjs(value.date).format('YYYY-MM-DD')),
+		// 		totalHours: value.totalHours,
+		// 		totalKms: value.totalKms,
+		// 		grossEarnings: value.grossEarnings,
+		// 		gasPrice: value.gasPrice,
+		// 		liquidEarnings: value.liquidEarnings,
+		// 		gasLiters: value.gasLiters,
+		// 		gasSpent: value.gasSpent,
+		// 		grossHourlyRate: grossHourlyRate,
+		// 		liquidHourlyRate: liquidHourlyRate,
+		// 		user: {
+		// 			// connect the delivery to the user
+		// 			connect: {
+		// 				id: user.id,
+		// 			},
+		// 		},
+		// 	},
+		// });
 
 		// Add the delivery day to the db and connect it to the user
 		const newDelivery = await prisma.delivery.create({
 			data: {
-				date: new Date(value.date),
+				date: dayjs(value.date).local().startOf('day').toDate(),
 				totalHours: value.totalHours,
 				totalKms: value.totalKms,
 				grossEarnings: value.grossEarnings,
