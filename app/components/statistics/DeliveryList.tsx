@@ -56,9 +56,6 @@ export default function DeliveryList() {
 
 	let filteredDeliveryDays = null;
 
-	// console.log('selectedDateRange', selectedDateRange);
-	console.log(selectedDateRange);
-
 	// first day of the selected date range
 	if (selectedDateRange !== null) {
 		// selectedDateRange.startDate.add(-1, 'hour');
@@ -67,11 +64,6 @@ export default function DeliveryList() {
 		const test = dayjs(selectedDateRange.startDate)
 			.add(1, 'minute')
 			.toDate();
-
-		// console.log(typeof test);
-		// console.log(test);
-
-		// console.log('selectedDateRange.startDate', selectedDateRange.startDate);
 
 		/*
 		{
