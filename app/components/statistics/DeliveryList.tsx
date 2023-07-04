@@ -23,6 +23,9 @@ export default function DeliveryList() {
 	const [showList, setShowList] = useState(false);
 	const [selectedDateRange, setSelectedDateRange] = useState<any>(null);
 
+	const [currentPage, setCurrentPage] = useState(1);
+	const [showDaily, setShowDaily] = useState(false);
+
 	// I can add a type to useQuery to make it more specific
 	const { data, error, isLoading } = useQuery({
 		queryKey: ['delivery'],
@@ -54,24 +57,10 @@ export default function DeliveryList() {
 		'December',
 	];
 
-	let filteredDeliveryDays = null;
+	let filteredDeliveryDays: any[] | null = null;
 
-	// first day of the selected date range
+	// Filter the delivery days by the selected date range
 	if (selectedDateRange !== null) {
-		// selectedDateRange.startDate.add(-1, 'hour');
-		// selectedDateRange.endDate.add(-1, 'hour');
-
-		const test = dayjs(selectedDateRange.startDate)
-			.add(1, 'minute')
-			.toDate();
-
-		/*
-		{
-			"startDate": "2023-06-30T04:00:00.000Z",
-			"endDate": "2023-07-02T04:00:00.000Z"
-		}
-		*/
-
 		if (selectedDateRange.startDate && selectedDateRange.endDate) {
 			filteredDeliveryDays = data?.filter((deliveryDay: any) => {
 				// Convert the delivery day date to a dayjs object
@@ -112,12 +101,12 @@ export default function DeliveryList() {
 		}
 	}
 
+	// Calculate the total of the selected date range
 	let totalDays = 0;
 	let totalHours = 0;
 	let totalKms = 0;
 	let liquidEarnings = 0;
 	let liquidHourlyRate = 0;
-
 	if (selectedDateRange) {
 		filteredDeliveryDays?.map((deliveryDay: any) => {
 			totalDays++;
@@ -130,11 +119,20 @@ export default function DeliveryList() {
 		liquidHourlyRate = +(liquidHourlyRate / totalDays).toFixed(2);
 	}
 
-	// formatting time
-
+	// Formatting total hours
 	const hours = Math.floor(totalHours);
 	const minutes = Math.round((totalHours - hours) * 60);
 	const totalHoursFormatted = `${hours}h ${minutes}m`;
+
+	// Pagination
+	const currentDeliveryDays = filteredDeliveryDays?.slice(
+		(currentPage - 1) * 5,
+		currentPage * 5
+	);
+
+	const handleShowDaily = () => {
+		setShowDaily(!showDaily);
+	};
 
 	return (
 		<>
@@ -155,9 +153,8 @@ export default function DeliveryList() {
 				</h1>
 			)}
 
-			{
-				selectedDateRange && filteredDeliveryDays && (
-					// filteredDeliveryDays?.map((deliveryDay: any) => (
+			{selectedDateRange && filteredDeliveryDays && (
+				<div className="">
 					<SimpleStatisticsReport
 						// key={deliveryDay.id}
 						// dateFormatted={'123'}
@@ -167,10 +164,62 @@ export default function DeliveryList() {
 						totalHours={totalHoursFormatted}
 						totalKms={totalKms}
 						liquidHourlyRate={liquidHourlyRate}
+						showHideButton={true}
 					/>
-				)
-				// ))
-			}
+
+					<div className="bg-gray-500 rounded py-4 m-4 mt-12">
+						<div className="flex justify-center align-center">
+							<button
+								className="text-white text-3xl font-bold "
+								onClick={handleShowDaily}>
+								DAILY
+							</button>
+						</div>
+
+						{
+							// Show the daily statistics
+							showDaily &&
+								currentDeliveryDays?.map((deliveryDay: any) => (
+									<SimpleStatisticsReport
+										key={deliveryDay.id}
+										dateFormatted={dayjs(
+											deliveryDay.date
+										).format('MMMM D, YYYY')}
+										liquidEarnings={
+											deliveryDay.liquidEarnings
+										}
+										totalHours={deliveryDay.totalHours}
+										totalKms={deliveryDay.totalKms}
+										liquidHourlyRate={
+											deliveryDay.liquidHourlyRate
+										}
+										showHideButton={false}
+									/>
+								))
+						}
+
+						{/* Pagination */}
+						{filteredDeliveryDays?.length > 5 && (
+							<div className="flex justify-center mb-4 gap-2">
+								<button
+									onClick={() =>
+										setCurrentPage(currentPage - 1)
+									}
+									className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">
+									Previous
+								</button>
+								<button
+									onClick={() =>
+										setCurrentPage(currentPage + 1)
+									}
+									className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">
+									Next
+								</button>
+							</div>
+						)}
+					</div>
+				</div>
+			)}
 		</>
 	);
 }

@@ -31,6 +31,7 @@ export default function CurrentWeek({}: {}) {
 				totalKms={totalKms}
 				liquidHourlyRate={liquidHourlyRate}
 				showChart={true}
+				showHideButton={true}
 			/>
 		</>
 	);

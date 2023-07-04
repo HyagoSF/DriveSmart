@@ -59,6 +59,7 @@ export default function LastWorkDay({}: {}) {
 				totalHours={totalHours}
 				totalKms={totalKms}
 				liquidHourlyRate={liquidHourlyRate}
+				showHideButton={true}
 			/>
 		</>
 	);
