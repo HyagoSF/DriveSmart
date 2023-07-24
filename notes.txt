@@ -209,3 +209,10 @@ ChartJS => use it for creating Charts
 
 
 I'm having LocationTracker files to track the kilometers, and I'm having the stopwatch to get just the time 
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+July 27
+
+TODO:
+      -remote Footer ✅
+      -add to sidebar ✅

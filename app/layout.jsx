@@ -40,10 +40,6 @@ export default async function RootLayout({ children }) {
 					{session?.user && <NavBarLogged session={session} />}
 
 					{children}
-
-					{/*  */}
-
-					{session?.user && <Footer />}
 				</QueryWrapper>
 			</body>
 

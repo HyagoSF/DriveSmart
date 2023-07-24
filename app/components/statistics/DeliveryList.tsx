@@ -184,7 +184,7 @@ export default function DeliveryList() {
 										key={deliveryDay.id}
 										dateFormatted={dayjs(
 											deliveryDay.date
-										).format('MMMM D, YYYY')}
+										).format('MMMM D')}
 										liquidEarnings={
 											deliveryDay.liquidEarnings
 										}
