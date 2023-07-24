@@ -10,6 +10,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../pages/api/auth/[...nextauth]';
 import NavBarLogged from './auth/NavBarLogged';
 import { useRouter } from 'next/navigation';
+import PopUpAddManually from './components/popups/PopUpAddManually';
 
 // Adding the font to the page
 const openSans = Open_Sans({

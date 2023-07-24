@@ -1,5 +1,8 @@
 'use client';
 
+import { motion as m } from 'framer-motion';
+import { AlertTriangle } from 'lucide-react';
+
 import { useEffect, useState } from 'react';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -8,16 +11,29 @@ import axios, { AxiosError } from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { DollarSign } from 'lucide-react';
 
-import { StatisticsType, Dollars, Liters } from '../types/StatisticsType';
+import { StatisticsType, Dollars, Liters } from '../../types/StatisticsType';
 import dayjs from 'dayjs';
 
-export default function DeliveryForm() {
-	// const [title, setTitle] = useState('');
-	// const [date, setDate] = useState('');
-	const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
+export default function PopUpAddManually({
+	// setShowStartDriveModal,
+	// setIsDriving,
+	// gasPrice,
+	// setGasPrice,
+	// handleX,
+	setShowAddManuallyModal,
+}: {
+	// setShowStartDriveModal: Function;
+	// setIsDriving: Function;
+	// gasPrice: number | null;
+	// setGasPrice: Function;
+	// handleX: any;
+	setShowAddManuallyModal: Function;
 
-	// this hours is the total hours and minutes, hours in decimal
-	// const [totalHours, setTotalHours] = useState<number>(0);
+	// showModal: Function;
+	// onRealDelete: Function;
+	// postId: string;
+}) {
+	const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
 
 	// set those and then when pass to totalHours, change it to decimal
 	const [hours, setHours] = useState<number>(0);
@@ -27,6 +43,9 @@ export default function DeliveryForm() {
 	const [grossEarnings, setGrossEarnings] = useState<any>(0);
 	const [liquidEarnings, setLiquidEarnings] = useState<Dollars>(0);
 	const [gasPrice, setGasPrice] = useState<any>(0);
+	const [startTime, setStartTime] = useState<any>(
+		dayjs().startOf('day').format('HH:mm')
+	);
 
 	const [fuelEfficiency, setFuelEfficiency] = useState<number>(0);
 
@@ -41,6 +60,16 @@ export default function DeliveryForm() {
 
 	// To access the client, and use the queryClient to invalidate the query ( to refetch the data when the mutation is done)
 	const queryClient = useQueryClient();
+
+	const initial = {
+		opacity: 0,
+		scale: 0.5,
+	};
+
+	const animate = {
+		opacity: 1,
+		scale: 1,
+	};
 
 	// EFFECTS
 	useEffect(() => {
@@ -58,10 +87,6 @@ export default function DeliveryForm() {
 			// setGasSpent(null);
 		}
 	}, [totalKms, grossEarnings, gasPrice, fuelEfficiency]);
-
-	// useEffect(() => {
-	// 	console.log(grossEarnings);
-	// }, [grossEarnings]);
 
 	// NOTIFICATIONS
 	const notify = (message: string, type: string) => {
@@ -148,9 +173,24 @@ export default function DeliveryForm() {
 		setGasPrice(Number(event.target.value));
 	};
 
-	const handleShowForm = () => {
-		setShowForm(!showForm);
+	const handleStartTimeChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const startTime = event.target.value;
+		if (startTime === '') {
+			// starting of the day
+			setStartTime(dayjs().startOf('day').format('HH:mm'));
+		}
+		setStartTime(startTime);
 	};
+
+	const closePopupHandler = () => {
+		setShowAddManuallyModal(false);
+	};
+
+	// const handleShowForm = () => {
+	// 	setShowForm(!showForm);
+	// };
 
 	const convertToDecimal = (hours: number, minutes: number) => {
 		const decimalHours = +(hours + minutes / 60).toFixed(2);
@@ -243,41 +283,71 @@ export default function DeliveryForm() {
 	);
 
 	return (
-		<form
-			onSubmit={onSubmitFormHandler}
-			className="bg-white my-4 px-8 py-2 mx-4 rounded-md">
-			{/* Here is for the toaster notification */}
-
-			<Toaster position="top-center" reverseOrder={false} />
-
-			{/* <h1
-				className="text-center text-2xl cursor-pointer"
-				onClick={handleShowForm}>
-				Add Manually
-			</h1> */}
-
-			{showForm && (
-				<div className="flex flex-wrap -mx-3 mt-8">
-					<div className="w-full md:w-1/2 px-3">
-						<label
-							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-							htmlFor="date">
-							Date
-						</label>
-						<input
-							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-							id="date"
-							name="date"
-							type="date"
-							value={date}
-							onChange={handleDateChange}
-							placeholder="MM-DD-YYYY"
-							// required
-						/>
+		<m.div
+			initial={initial}
+			animate={animate}
+			transition={{ duration: 0.2 }}
+			className="fixed w-full h-full z-50 backdrop-blur-md left-0 -mt-28 pt-20 ">
+			<m.form
+				initial={initial}
+				animate={animate}
+				transition={{ duration: 0.2 }}
+				onSubmit={onSubmitFormHandler}
+				className="bg-white my-4 rounded-md m-2 flex flex-col items-center gap-2 pb-8">
+				<Toaster position="top-center" reverseOrder={false} />
+				<div className="bg-black flex justify-between items-center w-full text-sm px-2 py-1 rounded-t-lg">
+					<div className="flex items-center gap-2 ">
+						<AlertTriangle size={32} className="text-white" />
+						<h2 className="text-white">ADD INFORMATION</h2>
 					</div>
+					<button className="text-white " onClick={closePopupHandler}>
+						X
+					</button>
+				</div>
+
+				<div className="flex flex-wrap mt-4">
+					<div className="flex gap-2 px-3 justify-between w-full">
+						{/* date */}
+						<div className="">
+							<label
+								className="block uppercase tracking-wide  text-xs font-bold mb-2 text-green-700"
+								htmlFor="date">
+								Date
+							</label>
+							<input
+								className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+								id="date"
+								name="date"
+								type="date"
+								value={date}
+								onChange={handleDateChange}
+								placeholder="MM-DD-YYYY"
+								// required
+							/>
+						</div>
+						{/* start time */}
+						<div className="w-full md:w-1/2">
+							<label
+								className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2"
+								htmlFor="startTime">
+								START TIME
+							</label>
+							<input
+								className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 mb-3 leading-tight focus:outline-none focus:bg-white "
+								id="startTime"
+								name="startTime"
+								type="time"
+								value={startTime}
+								onChange={handleStartTimeChange}
+								// placeholder="MM-DD-YYYY"
+								// required
+							/>
+						</div>
+					</div>
+
 					<div className="w-full md:w-1/2 px-3 ">
 						<label
-							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+							className="block uppercase tracking-wide text-green-700 text-xs font-bold mb-2"
 							htmlFor="total_hours">
 							Total Hours
 						</label>
@@ -306,38 +376,43 @@ export default function DeliveryForm() {
 							/>
 						</div>
 					</div>
-					<div className="w-full md:w-1/2 px-3">
-						<label
-							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-							htmlFor="total_kms">
-							Total Kms
-						</label>
-						<input
-							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-							id="total_kms"
-							name="total_kms"
-							value={totalKms === 0 ? '' : totalKms}
-							onChange={handleTotalKmsChange}
-							type="number"
-							placeholder="Enter total kms"
-						/>
-					</div>
+					<div className="w-full md:w-1/2 px-3 flex gap-2 ">
+						<div className="">
+							<label
+								className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+								htmlFor="total_kms">
+								Total Kms
+							</label>
 
-					<div className="w-full md:w-1/2 px-3">
-						<label
-							className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-							htmlFor="total_kms">
-							Fuel Efficiency
-						</label>
-						<input
-							className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-							id="total_kms"
-							name="total_kms"
-							value={fuelEfficiency === 0 ? '' : fuelEfficiency}
-							onChange={handleFuelEfficiencyChange}
-							type="number"
-							placeholder="Liters per 100 kms"
-						/>
+							<input
+								className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+								id="total_kms"
+								name="total_kms"
+								value={totalKms === 0 ? '' : totalKms}
+								onChange={handleTotalKmsChange}
+								type="number"
+								placeholder="Enter total kms"
+							/>
+						</div>
+
+						<div className="">
+							<label
+								className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+								htmlFor="total_kms">
+								Fuel Efficiency
+							</label>
+							<input
+								className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+								id="total_kms"
+								name="total_kms"
+								value={
+									fuelEfficiency === 0 ? '' : fuelEfficiency
+								}
+								onChange={handleFuelEfficiencyChange}
+								type="number"
+								placeholder="Liters / 100 kms"
+							/>
+						</div>
 					</div>
 
 					<div className="w-full md:w-1/2 px-3 relative">
@@ -382,7 +457,7 @@ export default function DeliveryForm() {
 					<button
 						disabled={isDisabled}
 						type="submit"
-						className="w-full bg-green-500 text-white font-bold py-2 px-6 rounded-xl disabled:opacity-25 ">
+						className="w-full bg-green-500 text-white font-bold py-2 px-6 rounded-xl disabled:opacity-25 mx-2 mt-2 ">
 						Add Delivery Day
 					</button>
 
@@ -433,7 +508,7 @@ export default function DeliveryForm() {
 						</>
 					)}
 				</div>
-			)}
-		</form>
+			</m.form>
+		</m.div>
 	);
 }

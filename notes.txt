@@ -216,3 +216,5 @@ July 27
 TODO:
       -remote Footer ✅
       -add to sidebar ✅
+
+      - add the button to track and change code to work without swiping the car
