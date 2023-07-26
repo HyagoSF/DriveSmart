@@ -18,48 +18,33 @@ export default function LastWorkDay({}: {}) {
 		queryFn: lastWorkDay,
 	});
 
-	/*
-	// TO GET SCREEN SIZE
-	const [screenSize, setScreenSize] = useState(getCurrentDimension());
-
-	function getCurrentDimension() {
-		return {
-			width: window.innerWidth,
-			height: window.innerHeight,
-		};
-	}
-
-	useEffect(() => {
-		const updateDimension = () => {
-			setScreenSize(getCurrentDimension());
-		};
-		window.addEventListener('resize', updateDimension);
-
-		return () => {
-			window.removeEventListener('resize', updateDimension);
-		};
-	}, [screenSize]);
-
-	screenSize.width > 768 ? 'desktop' : 'mobile';
-
-	*/
-
 	const dateFormatted = data?.date;
 	const liquidEarnings = data?.liquidEarnings;
 	const totalHours = data?.totalHours;
 	const totalKms = data?.totalKms;
 	const liquidHourlyRate = data?.liquidHourlyRate;
 
+	const grossEarnings = data?.grossEarnings;
+	const gasSpent = data?.gasSpent;
+	const gasLiters = data?.gasLiters;
+
 	return (
 		<>
 			<SimpleStatisticsReport
 				name="LAST RIDE"
+				type="lastWorkDay"
+
 				dateFormatted={dateFormatted}
 				liquidEarnings={liquidEarnings}
 				totalHours={totalHours}
 				totalKms={totalKms}
 				liquidHourlyRate={liquidHourlyRate}
+				grossEarnings={grossEarnings}
+				gasSpent={gasSpent}
+				gasLiters={gasLiters}
+
 				showHideButton={true}
+				// hasBackgroundColor={false}
 			/>
 		</>
 	);

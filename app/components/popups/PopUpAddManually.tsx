@@ -15,23 +15,9 @@ import { StatisticsType, Dollars, Liters } from '../../types/StatisticsType';
 import dayjs from 'dayjs';
 
 export default function PopUpAddManually({
-	// setShowStartDriveModal,
-	// setIsDriving,
-	// gasPrice,
-	// setGasPrice,
-	// handleX,
 	setShowAddManuallyModal,
 }: {
-	// setShowStartDriveModal: Function;
-	// setIsDriving: Function;
-	// gasPrice: number | null;
-	// setGasPrice: Function;
-	// handleX: any;
 	setShowAddManuallyModal: Function;
-
-	// showModal: Function;
-	// onRealDelete: Function;
-	// postId: string;
 }) {
 	const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
 

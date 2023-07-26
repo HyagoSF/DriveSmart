@@ -28,6 +28,7 @@ import DeliveryForm from '../DeliveryForm';
 
 import Image from 'next/image';
 import TrackButton from '../../images/home/TrackButton.png';
+import TrackStopButton from '../../images/home/TrackStopButton.png';
 import ManuallyButton from '../../images/home/ManuallyButton.png';
 import PopUpAddManually from '../popups/PopUpAddManually';
 
@@ -62,13 +63,15 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 	// handling the button click to start track
 	const handleTrackToggle = () => {
-		if (isDriving) {
-			setIsDriving(false);
-		}
 
 		if (!isDriving) {
 			setShowStartDriveModal(true);
 		}
+	};
+
+	const handleStopTrack = () => {
+		setShowStopDriveModal(true);
+		setIsDriving(false);
 	};
 
 	//handle add manually button
@@ -147,6 +150,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 				setGrossEarnings(0);
 				setGasPrice(0);
 				setFuelConsumption(0);
+				
 			},
 		}
 	);
@@ -195,7 +199,7 @@ export default function HomePage({ session }: { session: SessionType }) {
 
 			{/* NEW TRACKING */}
 			{!isDriving && (
-				<div className=" mt-8 h-40 flex justify-end sm:justify-center md:justify-center items-center gap-2 ">
+				<div className=" mt-8 h-40 flex justify-end sm:justify-center md:justify-center items-center ">
 					<Image
 						src={TrackButton}
 						alt="TrackButton"
@@ -220,7 +224,17 @@ export default function HomePage({ session }: { session: SessionType }) {
 			)}
 
 			{isDriving && (
-				<button onClick={handleTrackToggle}> STOP TRACK </button>
+				// <button onClick={handleTrackToggle}> STOP TRACK </button>
+				<div className=" mt-8 h-40 flex justify-center sm:justify-center md:justify-center items-center gap-2 mb-8">
+					<Image
+						src={TrackStopButton}
+						alt="TrackStopButton"
+						width={200}
+						height={200}
+						className="rounded-full"
+						onClick={handleStopTrack}
+					/>
+				</div>
 			)}
 
 			{/* if is not driving show the option to add values manually */}

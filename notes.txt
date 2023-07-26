@@ -217,4 +217,9 @@ TODO:
       -remote Footer ✅
       -add to sidebar ✅
 
-      - add the button to track and change code to work without swiping the car
+      - add the button to track and change code to work without swiping the car ✅
+      - change last ride information display ✅
+
+      - change home to when it's currently tracking (show stop etc...)
+      - change all the statistics page
+        - 
