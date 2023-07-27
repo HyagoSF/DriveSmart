@@ -107,6 +107,11 @@ export default function DeliveryList() {
 	let totalKms = 0;
 	let liquidEarnings = 0;
 	let liquidHourlyRate = 0;
+
+	let totalGrossEarnings = 0;
+	let totalGasSpent = 0;
+	let totalGasLiters = 0;
+
 	if (selectedDateRange) {
 		filteredDeliveryDays?.map((deliveryDay: any) => {
 			totalDays++;
@@ -114,6 +119,10 @@ export default function DeliveryList() {
 			totalKms += deliveryDay.totalKms;
 			liquidEarnings += deliveryDay.liquidEarnings;
 			liquidHourlyRate += deliveryDay.liquidHourlyRate;
+
+			totalGrossEarnings += deliveryDay.grossEarnings;
+			totalGasSpent += deliveryDay.gasSpent;
+			totalGasLiters += deliveryDay.gasLiters;
 		});
 
 		liquidHourlyRate = +(liquidHourlyRate / totalDays).toFixed(2);
@@ -159,12 +168,16 @@ export default function DeliveryList() {
 						// key={deliveryDay.id}
 						// dateFormatted={'123'}
 						name={'STATISTICS'}
+						type="lastWorkDay"
 						dateFormatted={formattedDate}
 						liquidEarnings={liquidEarnings}
 						totalHours={totalHoursFormatted}
 						totalKms={totalKms}
 						liquidHourlyRate={liquidHourlyRate}
 						showHideButton={true}
+						grossEarnings={totalGrossEarnings}
+						gasSpent={totalGasSpent}
+						gasLiters={totalGasLiters}
 					/>
 
 					<div className="bg-gray-500 rounded py-4 m-4 mt-12">
@@ -184,7 +197,7 @@ export default function DeliveryList() {
 										key={deliveryDay.id}
 										dateFormatted={dayjs(
 											deliveryDay.date
-										).format('MMMM D, YYYY')}
+										).format('MMMM D')}
 										liquidEarnings={
 											deliveryDay.liquidEarnings
 										}
@@ -194,6 +207,12 @@ export default function DeliveryList() {
 											deliveryDay.liquidHourlyRate
 										}
 										showHideButton={false}
+										grossEarnings={
+											deliveryDay.grossEarnings
+										}
+										type="lastWorkDay"
+										gasSpent={deliveryDay.gasSpent}
+										gasLiters={deliveryDay.gasLiters}
 									/>
 								))
 						}

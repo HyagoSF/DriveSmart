@@ -9,7 +9,7 @@ export default function PopUpFuelPrice({
 	setIsDriving,
 	gasPrice,
 	setGasPrice,
-	handleX,
+	// handleX,
 }: // showModal,
 // onRealDelete,
 // postId,
@@ -19,7 +19,7 @@ export default function PopUpFuelPrice({
 	setIsDriving: Function;
 	gasPrice: number | null;
 	setGasPrice: Function;
-	handleX: any;
+	// handleX: any;
 
 	// showModal: Function;
 	// onRealDelete: Function;
@@ -55,7 +55,7 @@ export default function PopUpFuelPrice({
 
 	const closePopupHandler = () => {
 		setShowStartDriveModal(false);
-		handleX.set(0);
+		// handleX.set(0);
 	};
 
 	return (

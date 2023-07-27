@@ -250,11 +250,11 @@ export default function DeliveryForm() {
 
 			<Toaster position="top-center" reverseOrder={false} />
 
-			<h1
+			{/* <h1
 				className="text-center text-2xl cursor-pointer"
 				onClick={handleShowForm}>
 				Add Manually
-			</h1>
+			</h1> */}
 
 			{showForm && (
 				<div className="flex flex-wrap -mx-3 mt-8">

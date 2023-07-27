@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 interface CredentialsFormProps {
-	type: 'signin' | 'signup';
+	type: 'signin' | 'signup' | 'login';
 	csrfToken?: string;
 }
 
@@ -38,25 +38,47 @@ export default function CredentialsForm(props: CredentialsFormProps) {
 	return (
 		<form onSubmit={handleSubmit}>
 			{error && (
-				<p className="text-white bg-red-600  rounded p-2"> {error}</p>
+				<p className="text-white bg-red-600  rounded "> {error}</p>
 			)}
+
+			<input
+				type="email"
+				id="email"
+				name="email"
+				placeholder="Email"
+				className="w-full p-2 my-2 border border-gray-300 rounded-md"
+				required
+			/>
 
 			<input
 				name="csrfToken"
 				type="hidden"
 				defaultValue={props.csrfToken}
 			/>
-			<label>
-				Email address
-				<input type="text" name="email" />
-			</label>
-			<label>
-				Password
-				<input type="password" name="password" />
-			</label>
-			<button type="submit">
-				{props.type === 'signin' ? 'Sign in' : 'Sign up'}
-			</button>
+
+			<input
+				type="password"
+				id="password"
+				name="password"
+				placeholder="Password"
+				className="w-full p-2 my-2 border border-gray-300 rounded-md bg-gray-200"
+				required
+			/>
+
+			{/* forgot password */}
+			<div className="flex justify-center">
+				<a href="#" className="text-sm text-gray-500">
+					Forgot Password?
+				</a>
+			</div>
+
+			<div className="flex justify-center mt-4 ">
+				<button
+					type="submit"
+					className="w-3/4 text-white bg-black p-4 rounded-md">
+					{props.type === 'signin' ? 'SIGN IN' : 'LOGIN'}
+				</button>
+			</div>
 		</form>
 	);
 }

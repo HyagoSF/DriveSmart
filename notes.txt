@@ -209,3 +209,18 @@ ChartJS => use it for creating Charts
 
 
 I'm having LocationTracker files to track the kilometers, and I'm having the stopwatch to get just the time 
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+July 27
+
+TODO:
+      -remote Footer ✅
+      -add to sidebar ✅
+
+      - add the button to track and change code to work without swiping the car ✅
+      - change last ride information display ✅
+
+      - change home to when it's currently tracking (show stop etc...) ✅
+      - change login page
+      - change all the statistics page 
+        - 

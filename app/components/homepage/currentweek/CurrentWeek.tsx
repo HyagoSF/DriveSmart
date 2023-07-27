@@ -21,17 +21,29 @@ export default function CurrentWeek({}: {}) {
 	const totalKms = data?.totalKmsDriven;
 	const liquidHourlyRate = data?.totalLiquidHourlyRate;
 
+	const grossEarnings = data?.totalGrossEarnings;
+	const gasSpent = data?.totalGasSpent;
+	const gasLiters = data?.totalGasLiters;
+
 	return (
 		<>
 			<SimpleStatisticsReport
 				name="CURRENT WEEK"
+				type="currentWeek"
+
 				dateFormatted={dateFormatted}
 				liquidEarnings={liquidEarnings}
 				totalHours={totalHours}
 				totalKms={totalKms}
 				liquidHourlyRate={liquidHourlyRate}
 				showChart={true}
+				grossEarnings={grossEarnings}
+				gasSpent={gasSpent}
+				gasLiters={gasLiters}
+
 				showHideButton={true}
+				
+				// hasBackgroundColor={true}
 			/>
 		</>
 	);

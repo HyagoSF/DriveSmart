@@ -1,5 +1,5 @@
 export type Dollars = number | null;
-export type Liters = number | null ;
+export type Liters = number | null;
 
 export type TimeDriving = {
 	hours: number;
@@ -33,3 +33,35 @@ export type EntryType = {
 	grossHourlyRate: number;
 	liquidHourlyRate: number;
 };
+
+export interface StatisticsForLastAndCurrentWeek {
+	lastWorkDay: {
+		name: string;
+		value: string;
+		textColor: string;
+		bgColor: string;
+	}[];
+	currentWeek: {
+		name: string;
+		value: string;
+		textColor: string;
+		bgColor: string;
+	}[];
+}
+
+export interface ExtraStatisticsForLastAndCurrentWeek {
+	lastWorkDay: {
+		name: string;
+		value: string;
+		textColor: string;
+		bgColor: string;
+		icon: JSX.Element;
+	}[];
+	currentWeek: {
+		name: string;
+		value: string;
+		textColor: string;
+		bgColor: string;
+		icon: JSX.Element;
+	}[];
+}
